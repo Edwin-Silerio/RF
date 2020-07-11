@@ -767,9 +767,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9b011f406405e4fa70c7a6e281fbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeSlider: {fileID: 2048461552}
+  timeSlider: {fileID: 0}
   numSeconds: 10
-  commandDisplay: {fileID: 1082108082}
+  commandDisplay: {fileID: 0}
   tvCommands:
   - {fileID: 11400000, guid: 2c1fb432d68fabd44be0ac8bdaddf991, type: 2}
   - {fileID: 11400000, guid: 1cd14b26d6e5fe742967de462e0cc78b, type: 2}
@@ -835,7 +835,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb37c84e485efa749973d835d59a578f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8360a04cd8ebfb940bad1c7cd905a0e0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

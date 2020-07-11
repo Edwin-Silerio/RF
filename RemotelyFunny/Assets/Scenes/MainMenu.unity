@@ -1696,5 +1696,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quitDelay: 1
-  highscores: {fileID: 1862996536}
+  highscores: {fileID: 1627961626}
   menu: {fileID: 1862996536}

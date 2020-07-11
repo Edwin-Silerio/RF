@@ -43,7 +43,17 @@ public class GameManager : MonoBehaviour
      */
     private void Start()
     {
-        SetUpScene();
+       // SetUpScene();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     /*
@@ -82,8 +92,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Equals("Game")) {
+            SetUpScene();
+        }
+    }
+
     private void SetUpScene()
     {
+        timeSlider = FindObjectOfType<Slider>();
+        commandDisplay = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
         GrabCommands();
 
         if (commands.Count > 0) // Ensures that the commands list isn't empty
