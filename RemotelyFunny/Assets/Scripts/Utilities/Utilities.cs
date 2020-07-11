@@ -16,13 +16,17 @@ public static class Utilities
 #if UNITY_EDITOR
 
     // Main menu
-    [MenuItem("Scenes/Main Menu")] public static void MainMenuScene() => 
+    [MenuItem("Scenes/Main Menu")] public static void MainMenu() => 
         OpenScene("Assets/Scenes/MainMenu.unity");
 
     // Game
-    [MenuItem("Scenes/Game")] public static void ScenarioOne() => 
+    [MenuItem("Scenes/Game")] public static void Game() => 
         OpenScene("Assets/Scenes/Game.unity");
-    
+
+    // Game over screen
+    [MenuItem("Scenes/Game Over")] public static void GameOver() => 
+        OpenScene("Assets/Scenes/GameOver.unity");
+
     [MenuItem("Scenes/Add or Edit Scene Menu Options")] public static void EditMenu() =>
         AssetDatabase.OpenAsset(AssetDatabase.LoadAssetAtPath("Assets/Scripts/Utility/Utilities.cs", typeof(Object)), 56);
     private static void OpenScene(string scenePath)
