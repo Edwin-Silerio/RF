@@ -39,18 +39,16 @@ public class GameManager : MonoBehaviour
     }
 
     /*
-     * Set up the scene in the beginning
+     * Called when the component is enabled. Helps with OnSceneLoaded()
      */
-    private void Start()
-    {
-       // SetUpScene();
-    }
-
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    /*
+     * Called when the component is disable, i.e. when the game ends. Helps with OnSceneLoaded()
+     */
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -81,6 +79,8 @@ public class GameManager : MonoBehaviour
     */
     private void FixedUpdate()
     {
+        // Only want the timer to go down if we're not in debug mode and we're currently in 
+        // "Game" scene
         if (!debug && SceneManager.GetActiveScene().name.Equals("Game"))
         { 
             timeSlider.value -= Time.deltaTime / numSeconds;
@@ -92,13 +92,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    /*
+     * Gets called everytime a scene is loaded. Checks if the current scene is the "Game" scene.
+     * If so, then setups the scene
+     */
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name.Equals("Game")) {
             SetUpScene();
         }
     }
 
+    /*
+     * Sets up the scene by grabbing the necessary components and commands
+     */
     private void SetUpScene()
     {
         timeSlider = FindObjectOfType<Slider>();
@@ -111,14 +118,19 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Commands array is empty");
     }
 
+    /*
+     * Puts the different command lists into list and shuffles it so it's randomized
+     */
     private void GrabCommands()
     {
+        // TODO: Change which lists to grab from based on the round the player is on
         commands = new List<Command>(tvCommands);
         commands.Shuffle();
     } 
-
    
-
+    /// <summary>
+    /// Displays the command by changing the text
+    /// </summary>
     public void DisplayCommand()
     {
         commandDisplay.text = currCommand.commandDisplay;
@@ -127,6 +139,9 @@ public class GameManager : MonoBehaviour
 
 }
 
+/// <summary>
+/// Helps shuffle lists. In our case, the list of commands
+/// </summary>
 public static class ShuffleHelper
 {
     public static void Shuffle<T>(this IList<T> list)
