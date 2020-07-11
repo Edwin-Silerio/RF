@@ -104,6 +104,23 @@ public class GameManager : MonoBehaviour
     }
 
     /*
+     * Resets the time
+     */
+    public void ResetTime()
+    {
+        timeSlider.value = 1;
+    }
+
+    /*
+     * Decreases the time based on the value passed in
+     */
+    public void DecreaseTime(float time)
+    {
+        Debug.Log("Decreasing time");
+        timeSlider.value -= time/numSeconds;
+    }
+
+    /*
      * Sets up the scene by grabbing the necessary components and commands
      */
     private void SetUpScene()
