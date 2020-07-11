@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int numSeconds = 1;
     [SerializeField] private TextMeshProUGUI commandDisplay = default;
     [SerializeField] private Command[] tvCommands = default;
-    [SerializeField] private Command[] dvrCommands = default;
-    [SerializeField] private Command[] blenderCommands = default;
-    [SerializeField] private bool debug;
+    //[SerializeField] private Command[] dvrCommands = default;
+    //[SerializeField] private Command[] blenderCommands = default;
+    [SerializeField] private bool debug = default;
 
     private List<Command> commands;
     private Command currCommand;
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     */
     private void FixedUpdate()
     {
-        if (!debug)
+        if (!debug && SceneManager.GetActiveScene().name.Equals("Game"))
         { 
             timeSlider.value -= Time.deltaTime / numSeconds;
 

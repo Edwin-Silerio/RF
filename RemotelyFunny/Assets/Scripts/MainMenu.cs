@@ -21,6 +21,11 @@ public class MainMenu: MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     /// <summary>
     /// Displays the highscores
     /// </summary>
