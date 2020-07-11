@@ -54,6 +54,7 @@ public class MainMenu: MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
+
         Debug.Log("Quit the game");
         StartCoroutine(QuitAfterDelay());
     }
