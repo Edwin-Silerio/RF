@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e4cb09c598c04690dd117156d2fee, type: 3}
   m_Name: VolDown
   m_EditorClassIdentifier: 
-  commandDisplay: {fileID: 0}
+  commandDisplay: Turn <color=red>TV</color> <color=purple>Volume</color> down!
   command: 1
