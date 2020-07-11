@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Mute
   m_EditorClassIdentifier: 
   commandDisplay: <color=purple>Mute</color> the <color=red>TV!</color>
-  command: 6
+  command: 7

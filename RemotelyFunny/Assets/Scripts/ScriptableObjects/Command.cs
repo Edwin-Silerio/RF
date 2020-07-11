@@ -18,7 +18,8 @@ public class Command : ScriptableObject
         ChangeCh1,
         ChangeCh2,
         ChangeCh3,
-        ChangeChByOne,
+        ChangeChUpOne,
+        ChangeChDownOne,
         mute
     }
 

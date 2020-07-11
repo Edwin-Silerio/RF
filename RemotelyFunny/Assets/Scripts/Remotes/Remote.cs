@@ -13,4 +13,5 @@ public interface Remote
     /// Hides the large remote and shows the table remote
     /// </summary>
     void ShowTableRemote();
+
 }
