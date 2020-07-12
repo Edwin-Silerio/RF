@@ -10,6 +10,9 @@ public class BlenderRemote : MonoBehaviour, Remote
     private TVRemote tvRemote;
     private DVRRemote dvrRemote;
 
+    public GameObject GetBlenderRemote => blenderRemote;
+    public GameObject GetTableBlenderRemote => tableBlenderRemote;
+
     private void Start()
     {
         tvRemote = GetComponent<TVRemote>();
@@ -40,7 +43,10 @@ public class BlenderRemote : MonoBehaviour, Remote
 
     public void HideOtherRemotes()
     {
-        tvRemote.gameObject.SetActive(false);
-        dvrRemote.gameObject.SetActive(false);
+        tvRemote.GetTVRemote.gameObject.SetActive(false);
+        tvRemote.GetTableTVRemote.gameObject.SetActive(true);
+        dvrRemote.GetDVRRemote.gameObject.SetActive(false);
+        dvrRemote.GetTableDVRRemote.gameObject.SetActive(true);
+
     }
 }
