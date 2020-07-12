@@ -32,7 +32,6 @@ public class MainMenu: MonoBehaviour
     /// </summary>
     public void ShowScores()
     {
-        Debug.Log("Showing scores");
         menu.alpha = 0;
         menu.blocksRaycasts = false;
         menu.interactable = false;

@@ -25,9 +25,8 @@ public class Score : MonoBehaviour
      */
     private void Awake()
     {
-        Debug.Log("Grabbing textmesh");
+
         scoreDisplay = GetComponent<TextMeshProUGUI>();
-        Debug.Log($"Textmesh: {scoreDisplay.transform.parent.gameObject.name}");
     }
 
     /*
