@@ -11,6 +11,7 @@ public class MainMenu: MonoBehaviour
     [SerializeField] private float quitDelay = 1f;
     [SerializeField] private CanvasGroup highscores = default;
     [SerializeField] private CanvasGroup menu = default;
+    [SerializeField] private Score score = default;
 
     /// <summary>
     /// Goes to the game scene
@@ -38,6 +39,8 @@ public class MainMenu: MonoBehaviour
         highscores.alpha = 1;
         highscores.blocksRaycasts = true;
         highscores.interactable = true;
+        score.ShowHighscores();
+
     }
 
     /// <summary>

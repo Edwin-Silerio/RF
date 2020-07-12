@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class Score : MonoBehaviour
     private KeyCode incScore = KeyCode.Period;
     private KeyCode decScore = KeyCode.Comma;
     private string scoreKey = "RecentScore";
+    private string highscoresKey = "Highscores";
+    private List<int> highscores;
 
 
     /*
@@ -58,11 +61,43 @@ public class Score : MonoBehaviour
     public void SaveScore()
     {
         PlayerPrefs.SetInt(scoreKey, int.Parse(scoreDisplay.text));
+        int recentScore = PlayerPrefs.GetInt(scoreKey);
+        highscores = new List<int>(PlayerPrefsX.GetIntArray(highscoresKey, 0, 5));
+        Debug.Log($"highscores count: {highscores.Count}");
+        for (int i = 0; i < highscores.Count; i++)
+        {
+            if (recentScore > highscores[i])
+            {
+                highscores.Insert(i, recentScore);
+                PlayerPrefsX.SetIntArray(highscoresKey, highscores.ToArray());
+                break;
+            }
+        }
+
+        for (int i = 5; i < highscores.Count; i++)
+        {
+            highscores.RemoveAt(i);
+        }
+
+        foreach (int score in highscores)
+        {
+            Debug.Log(score);
+        }
     }
 
     public void ShowRecentScore()
     {
         Debug.Log("In showrecentscore");
         scoreDisplay.text = $"Score: {PlayerPrefs.GetInt(scoreKey, 0).ToString()}";
+    }
+
+    public void ShowHighscores()
+    {
+        scoreDisplay.text = "";
+        highscores = new List<int>(PlayerPrefsX.GetIntArray(highscoresKey, 0, 5));
+        for (int i = 0; i < 5; i++)
+        {
+            scoreDisplay.text += $"{i + 1}. {highscores[i]} { Environment.NewLine}";
+        }
     }
 }
