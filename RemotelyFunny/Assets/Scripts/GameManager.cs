@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,21 +12,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int numSeconds = 10;
     [SerializeField] private int countDownSec = 5;
     [SerializeField] private float timerPenalty = .5f;
-    private Score score;
-    [SerializeField] private TextMeshProUGUI commandDisplay = default;
     [SerializeField] private TextMeshProUGUI countDownDisplay = default;
+    [SerializeField] private GameObject speechBubble = default;
     [SerializeField] private Command[] tvCommands = default;
-    //[SerializeField] private Command[] dvrCommands = default;
+    [SerializeField] private Command[] dvrCommands = default;
     //[SerializeField] private Command[] blenderCommands = default;
+    [SerializeField] private GameObject dvrBox = default;
+    [SerializeField] private GameObject tableDVR = default;
     [SerializeField] private bool debug = default;
     [SerializeField] private bool dvr = default;
     [SerializeField] private bool blender = default;
 
+    private TextMeshProUGUI commandDisplay;
+    private Score score;
     private List<Command> commands;
     private Command currCommand;
     public Command CurrCommand => currCommand;
+    public bool GetDVR => dvr;
+    public bool GetBlender => blender;
 
     private int numActionsCorrect = 0;
+    private int currRound = -1;
 
 
     /*
@@ -70,7 +77,7 @@ public class GameManager : MonoBehaviour
      */
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"Scene name: {scene.name}");
+        //Debug.Log($"Scene name: {scene.name}");
         if (scene.name.Equals("Game")) {
             SetUpScene();
         }
@@ -84,11 +91,45 @@ public class GameManager : MonoBehaviour
     public void CorrectAction()
     {
         numActionsCorrect++;
-        score.ChangeScore((int)(timeSlider.value * 100)); // Change the score
-        ResetTime(); // Got it right so reset time
-        Random.InitState((int)System.DateTime.Now.Ticks); // Change seed so randomization is different
-        currCommand = commands[Random.Range(0,commands.Count)]; // Choose a random index
-        DisplayCommand(); // Display the next command
+        if (numActionsCorrect < 10)
+        {
+            score.ChangeScore((int)(timeSlider.value * 100)); // Change the score
+            ResetTime(); // Got it right so reset time
+
+            int n = Random.Range(1, commands.Count);// Choose a random index
+            currCommand = commands[n]; 
+            // Moves the selected command to index 0 so it's not chosen again right away
+            commands[n] = commands[0];
+            commands[0] = currCommand;
+            DisplayCommand(); // Display the next command
+        }
+        else
+            NextRound();
+        
+    }
+
+    public void NextRound()
+    {
+        currRound++;
+        if(currRound == 0)
+        {
+            dvrBox.SetActive(false);
+            tableDVR.SetActive(false);
+        }
+        else if (currRound == 1)
+        {
+            Debug.Log("Round 2");
+            dvrBox.gameObject.SetActive(true);
+            tableDVR.SetActive(true);
+            dvr = true;
+        }
+        else if(currRound == 2)
+        {
+            currRound++;
+            //blender = true;
+        }
+
+        GrabCommands();
     }
 
     /*
@@ -114,16 +155,26 @@ public class GameManager : MonoBehaviour
     private void SetUpScene()
     {
         // Grab components
-        timeSlider = GameObject.FindGameObjectWithTag("Timer").GetComponent<Slider>();
+        /* timeSlider = GameObject.FindGameObjectWithTag("Timer").GetComponent<Slider>();
+
+         countDownDisplay = GameObject.FindGameObjectWithTag("Countdown").GetComponent<TextMeshProUGUI>();
+ */
         score = FindObjectOfType<Score>();
-        commandDisplay = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
-        countDownDisplay = GameObject.FindGameObjectWithTag("Countdown").GetComponent<TextMeshProUGUI>();
+        commandDisplay = speechBubble.GetComponentInChildren<TextMeshProUGUI>();
+        tableDVR = GameObject.FindGameObjectWithTag("TableDVR");
+        dvrBox = GameObject.FindGameObjectWithTag("DVR");
+        timeSlider.value = 1;
+        score.ChangeScore(0);
+        currRound = -1;
+
+
+        Random.InitState((int)System.DateTime.Now.Ticks); // Change seed so randomization is different
 
         // Make sure all components exist
         if (timeSlider == null || commandDisplay == null || countDownDisplay == null || score == null)
             Debug.LogError($"timeSlide: {timeSlider}, commandDisplay: {commandDisplay}, countDownDisplay: {countDownDisplay}, score: {score}");
-        
-        GrabCommands();
+
+        NextRound();
 
         if (commands.Count > 0) // Ensures that the commands list isn't empty
             currCommand = commands[0];
@@ -141,6 +192,13 @@ public class GameManager : MonoBehaviour
     {
         // TODO: Change which lists to grab from based on the round the player is on
         commands = new List<Command>(tvCommands);
+        numActionsCorrect = 0;
+        if (dvr)
+        {
+            Debug.Log("Grabbing the dvr commands");
+            foreach(Command command in dvrCommands)
+                commands.Add(command);
+        }
         commands.Shuffle();
     } 
 
@@ -164,6 +222,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void DisplayCommand()
     {
+        speechBubble.gameObject.SetActive(true);
         commandDisplay.text = currCommand.commandDisplay;
     }
 

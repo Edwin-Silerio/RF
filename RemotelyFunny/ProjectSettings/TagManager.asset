@@ -7,6 +7,9 @@ TagManager:
   - Countdown
   - Score
   - Timer
+  - TableDVR
+  - DVR
+  - TV
   layers:
   - Default
   - TransparentFX

@@ -36,6 +36,7 @@ public class BlenderRemote : MonoBehaviour, Remote
 
     public void ShowTableRemote()
     {
+        Debug.Log("Blender show table remote");
         blenderRemote.gameObject.SetActive(false);
         tableBlenderRemote.gameObject.SetActive(true);
         NextCommand();
@@ -43,6 +44,7 @@ public class BlenderRemote : MonoBehaviour, Remote
 
     public void HideOtherRemotes()
     {
+        Debug.Log("Blender hide other remotes");
         tvRemote.GetTVRemote.gameObject.SetActive(false);
         tvRemote.GetTableTVRemote.gameObject.SetActive(true);
         dvrRemote.GetDVRRemote.gameObject.SetActive(false);

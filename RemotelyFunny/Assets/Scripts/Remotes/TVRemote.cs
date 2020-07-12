@@ -32,6 +32,7 @@ public class TVRemote : MonoBehaviour, Remote
 
     private void Start()
     {
+        tvAnimator = GameObject.FindGameObjectWithTag("TV").GetComponent<Animator>();
         channel.text = currChannel.ToString();
         dvrRemote = GetComponent<DVRRemote>();
         blenderRemote = GetComponent<BlenderRemote>();
@@ -100,7 +101,7 @@ public class TVRemote : MonoBehaviour, Remote
 
     public void ChangeChannel()
     {
-        Debug.Log($"currChannel: {currChannel}");
+        //Debug.Log($"currChannel: {currChannel}");
         channel.text = currChannel.ToString();
         switch (currChannel)
         {
@@ -115,6 +116,7 @@ public class TVRemote : MonoBehaviour, Remote
                 tvAnimator.SetBool(animatorBools[0], false);
                 break;
             case 123:
+                Debug.Log("In 123");
                 tvAnimator.SetBool(animatorBools[2], true);
                 tvAnimator.SetBool(animatorBools[0], false);
                 tvAnimator.SetBool(animatorBools[1], false);
@@ -143,7 +145,7 @@ public class TVRemote : MonoBehaviour, Remote
      */
     public void RemoteButtonPressed(int button)
     {
-        Debug.Log($"ButtonPressed: {(RemoteButtons)button}, curCommand: {currCommand.command}");
+        //Debug.Log($"ButtonPressed: {(RemoteButtons)button}, curCommand: {currCommand.command}");
         switch ((RemoteButtons)button)
         {
             case RemoteButtons.ChannelUp:
@@ -153,6 +155,7 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 currChannel = targChannel;
+                tvAnimator.speed = 1;
                 ChangeChannel();
                 Managers.GameManager.CorrectAction();
                 ShowTableRemote();
@@ -164,6 +167,7 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 currChannel = targChannel;
+                tvAnimator.speed = 1;
                 ChangeChannel();
                 Managers.GameManager.CorrectAction();
                 ShowTableRemote();
@@ -197,6 +201,7 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 currVolume = 0;
+                volumeSlider.value = 0;
                 Managers.GameManager.CorrectAction();
                 ShowTableRemote();
                 break;
@@ -305,6 +310,8 @@ public class TVRemote : MonoBehaviour, Remote
                     && currCommand.command != Command.Commands.ChangeCh3 || currNums != numsNeeded)
                 {
                     Debug.Log($"Currnums: {currNums}, numsNeeded: {numsNeeded}");
+                    buildChannelNum = 0;
+                    currNums = 0;
                     Managers.GameManager.DecreaseTime();
                     break;
                 }
@@ -315,6 +322,7 @@ public class TVRemote : MonoBehaviour, Remote
                     numsNeeded = 0;
                     buildChannelNum = 0;
                     currChannel = targChannel;
+                    tvAnimator.speed = 1;
                     ChangeChannel();
                     Managers.GameManager.CorrectAction();
                     ShowTableRemote();
@@ -330,9 +338,11 @@ public class TVRemote : MonoBehaviour, Remote
     public void HideOtherRemotes()
     {
         dvrRemote.GetDVRRemote.gameObject.SetActive(false);
-        dvrRemote.GetTableDVRRemote.gameObject.SetActive(true);
+        if(Managers.GameManager.GetDVR)
+            dvrRemote.GetTableDVRRemote.gameObject.SetActive(true);
         blenderRemote.GetBlenderRemote.gameObject.SetActive(false);
-        blenderRemote.GetTableBlenderRemote.gameObject.SetActive(true);
+        if(Managers.GameManager.GetBlender)
+            blenderRemote.GetTableBlenderRemote.gameObject.SetActive(true);
     }
 
     /*

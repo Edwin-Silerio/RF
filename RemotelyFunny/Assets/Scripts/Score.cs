@@ -27,6 +27,7 @@ public class Score : MonoBehaviour
     {
 
         scoreDisplay = GetComponent<TextMeshProUGUI>();
+        //scoreDisplay.text = "0";
     }
 
     /*
@@ -87,7 +88,7 @@ public class Score : MonoBehaviour
     public void ShowRecentScore()
     {
         Debug.Log("In showrecentscore");
-        scoreDisplay.text = $"Score: {PlayerPrefs.GetInt(scoreKey, 0).ToString()}";
+        scoreDisplay.text = $"{PlayerPrefs.GetInt(scoreKey, 0).ToString()}";
     }
 
     public void ShowHighscores()
