@@ -3631,7 +3631,7 @@ MonoBehaviour:
   - Channel2
   - Channel3
   channels: 09000000300000007b000000
-  currChannel: 50
+  currChannel: 9
   currVolume: 2
 --- !u!1 &1763061937
 GameObject:

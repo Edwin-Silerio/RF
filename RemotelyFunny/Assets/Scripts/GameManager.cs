@@ -96,6 +96,8 @@ public class GameManager : MonoBehaviour
 
             if (timeSlider.value <= 0)
             {
+                score.SaveScore();
+                countDownDisplay.text = countDownSec.ToString();
                 SceneManager.LoadScene("GameOver");
             }
         }
@@ -107,8 +109,16 @@ public class GameManager : MonoBehaviour
      */
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log($"Scene name: {scene.name}");
         if (scene.name.Equals("Game")) {
+            print("Setting up scene");
             SetUpScene();
+        }
+        else if (scene.name.Equals("GameOver"))
+        {
+            score = GameObject.FindGameObjectWithTag("Score").GetComponent<Score>();
+            Debug.Log("Showing recent score");
+            score.ShowRecentScore();
         }
     }
 
@@ -117,7 +127,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Fill: {timeSlider.value}");
         score.ChangeScore((int)(timeSlider.value * 100));
         ResetTime();
-        commandIndex++;
+        /*commandIndex++;
         if(commandIndex < commands.Count)
         {
             currCommand = commands[commandIndex];
@@ -125,8 +135,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("MainMenu");
-        }
+            SceneManager.LoadScene("WinScreen");
+        }*/
+        commandIndex = (commandIndex + 1) % commands.Count;
+        currCommand = commands[commandIndex];
+        DisplayCommand();
     }
 
     /*

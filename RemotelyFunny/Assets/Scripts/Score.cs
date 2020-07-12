@@ -14,14 +14,17 @@ public class Score : MonoBehaviour
     private TextMeshProUGUI scoreDisplay = default;
     private KeyCode incScore = KeyCode.Period;
     private KeyCode decScore = KeyCode.Comma;
+    private string scoreKey = "RecentScore";
 
 
     /*
      * Grab the score text
      */
-    private void Start()
+    private void Awake()
     {
+        Debug.Log("Grabbing textmesh");
         scoreDisplay = GetComponent<TextMeshProUGUI>();
+        Debug.Log($"Textmesh: {scoreDisplay.transform.parent.gameObject.name}");
     }
 
     /*
@@ -50,5 +53,16 @@ public class Score : MonoBehaviour
     {
         score = int.Parse(scoreDisplay.text) + value;
         scoreDisplay.text = score.ToString();
+    }
+
+    public void SaveScore()
+    {
+        PlayerPrefs.SetInt(scoreKey, int.Parse(scoreDisplay.text));
+    }
+
+    public void ShowRecentScore()
+    {
+        Debug.Log("In showrecentscore");
+        scoreDisplay.text = $"Score: {PlayerPrefs.GetInt(scoreKey, 0).ToString()}";
     }
 }

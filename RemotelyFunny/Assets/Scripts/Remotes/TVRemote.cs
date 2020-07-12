@@ -29,6 +29,7 @@ public class TVRemote : MonoBehaviour, Remote
         ChangeChannel();
 
     }
+
     public void NextCommand()
     {
         if (channels.Length < 3)
@@ -38,7 +39,6 @@ public class TVRemote : MonoBehaviour, Remote
         }
 
         currCommand = GameManager.CurrCommand;
-        Debug.Log($"Current command: {currCommand.commandDisplay}");
         switch (currCommand.command)
         {
             case Command.Commands.VolUp:
