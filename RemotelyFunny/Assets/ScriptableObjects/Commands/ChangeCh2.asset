@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e4cb09c598c04690dd117156d2fee, type: 3}
   m_Name: ChangeCh2
   m_EditorClassIdentifier: 
-  commandDisplay: Change the <color=red>TV</color> channel to <color=purple>48!</color>
+  commandDisplay: Change the <color=green>TV</color> channel to <color=orange>48!</color>
   command: 3

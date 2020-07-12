@@ -7,42 +7,26 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] static private Slider timeSlider = default;
-    [SerializeField] static private int numSeconds = 10;
+    [SerializeField] private Slider timeSlider = default;
+    [SerializeField] private int numSeconds = 10;
     [SerializeField] private int countDownSec = 5;
-    [SerializeField] static private float timerPenalty = .5f;
-    static private Score score;
-    [SerializeField] static private TextMeshProUGUI commandDisplay = default;
+    [SerializeField] private float timerPenalty = .5f;
+    private Score score;
+    [SerializeField] private TextMeshProUGUI commandDisplay = default;
     [SerializeField] private TextMeshProUGUI countDownDisplay = default;
     [SerializeField] private Command[] tvCommands = default;
     //[SerializeField] private Command[] dvrCommands = default;
     //[SerializeField] private Command[] blenderCommands = default;
     [SerializeField] private bool debug = default;
 
-    static private List<Command> commands;
-    private static Command currCommand;
-    private static GameManager instance;
-    public static GameManager Instance => instance;
-    public static Command CurrCommand => currCommand;
+    private List<Command> commands;
+    private Command currCommand;
+    private GameManager instance;
+    public GameManager Instance => instance;
+    public Command CurrCommand => currCommand;
 
-    static private int commandIndex = 0;
+    private int commandIndex = 0;
 
-    /*
-     * Allows for the game manager to be a singleton
-     */
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     /*
      * Called when the component is enabled. Helps with OnSceneLoaded()
@@ -122,30 +106,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    static public void CorrectAction()
+    public void CorrectAction()
     {
         Debug.Log($"Fill: {timeSlider.value}");
         score.ChangeScore((int)(timeSlider.value * 100));
         ResetTime();
-        /*commandIndex++;
-        if(commandIndex < commands.Count)
-        {
-            currCommand = commands[commandIndex];
-            DisplayCommand();
-        }
-        else
-        {
-            SceneManager.LoadScene("WinScreen");
-        }*/
         commandIndex = (commandIndex + 1) % commands.Count;
+
+        if(commandIndex == 0)
+        {
+            //Shuffle();
+        }
+
         currCommand = commands[commandIndex];
         DisplayCommand();
     }
 
+    
+
     /*
      * Resets the time
      */
-    static public void ResetTime()
+    public void ResetTime()
     {
         timeSlider.value = 1;
     }
@@ -153,7 +135,7 @@ public class GameManager : MonoBehaviour
     /*
      * Decreases the time based on the value passed in
      */
-    static public void DecreaseTime()
+    public void DecreaseTime()
     {
         Debug.Log("Decreasing time");
         timeSlider.value -= timerPenalty / numSeconds;
@@ -213,7 +195,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Displays the command by changing the text
     /// </summary>
-    static public void DisplayCommand()
+    public void DisplayCommand()
     {
         commandDisplay.text = currCommand.commandDisplay;
     }

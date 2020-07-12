@@ -20,7 +20,12 @@ public class Command : ScriptableObject
         ChangeCh3,
         ChangeChUpOne,
         ChangeChDownOne,
-        mute
+        mute,
+        Pause,
+        REC,
+        Play,
+        FF,
+        Rewind,
     }
 
     public string commandDisplay; // How the command will be displayed in game
