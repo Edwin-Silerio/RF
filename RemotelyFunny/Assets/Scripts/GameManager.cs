@@ -18,14 +18,14 @@ public class GameManager : MonoBehaviour
     //[SerializeField] private Command[] dvrCommands = default;
     //[SerializeField] private Command[] blenderCommands = default;
     [SerializeField] private bool debug = default;
+    [SerializeField] private bool dvr = default;
+    [SerializeField] private bool blender = default;
 
     private List<Command> commands;
     private Command currCommand;
-    private GameManager instance;
-    public GameManager Instance => instance;
     public Command CurrCommand => currCommand;
 
-    private int commandIndex = 0;
+    private int numActionsCorrect = 0;
 
 
     /*
@@ -42,29 +42,6 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    /*
-     * Primarily used for debugging. P cycles through the command and R reloads the scene
-     */
-    private void Update()
-    {
-        if (debug)
-        {
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                DisplayCommand();
-                commandIndex++;
-                if (commandIndex < commands.Count)
-                    currCommand = commands[commandIndex];
-                else
-                    Debug.Log("Out of commands");
-            }
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                SceneManager.LoadScene("Game");
-            }
-        }
     }
 
     /*
@@ -95,34 +72,24 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Scene name: {scene.name}");
         if (scene.name.Equals("Game")) {
-            print("Setting up scene");
             SetUpScene();
         }
         else if (scene.name.Equals("GameOver"))
         {
             score = GameObject.FindGameObjectWithTag("Score").GetComponent<Score>();
-            Debug.Log("Showing recent score");
             score.ShowRecentScore();
         }
     }
 
     public void CorrectAction()
     {
-        Debug.Log($"Fill: {timeSlider.value}");
-        score.ChangeScore((int)(timeSlider.value * 100));
-        ResetTime();
-        commandIndex = (commandIndex + 1) % commands.Count;
-
-        if(commandIndex == 0)
-        {
-            //Shuffle();
-        }
-
-        currCommand = commands[commandIndex];
-        DisplayCommand();
+        numActionsCorrect++;
+        score.ChangeScore((int)(timeSlider.value * 100)); // Change the score
+        ResetTime(); // Got it right so reset time
+        Random.InitState((int)System.DateTime.Now.Ticks); // Change seed so randomization is different
+        currCommand = commands[Random.Range(0,commands.Count)]; // Choose a random index
+        DisplayCommand(); // Display the next command
     }
-
-    
 
     /*
      * Resets the time
