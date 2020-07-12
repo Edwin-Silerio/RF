@@ -9,10 +9,12 @@ using UnityEngine;
 public class Score : MonoBehaviour
 {
     [SerializeField] private int score = 0;
-    
+    [SerializeField] private bool debug = false;
+
     private TextMeshProUGUI scoreDisplay = default;
     private KeyCode incScore = KeyCode.Period;
     private KeyCode decScore = KeyCode.Comma;
+
 
     /*
      * Grab the score text
@@ -27,13 +29,16 @@ public class Score : MonoBehaviour
      */
     private void Update()
     {
-        if (Input.GetKeyDown(incScore))
+        if (debug)
         {
-            ChangeScore(10);
-        }
-        else if (Input.GetKeyDown(decScore))
-        {
-            ChangeScore(-10);
+            if (Input.GetKeyDown(incScore))
+            {
+                ChangeScore(10);
+            }
+            else if (Input.GetKeyDown(decScore))
+            {
+                ChangeScore(-10);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,9 @@ public class TVRemote : MonoBehaviour, Remote
 {
     [SerializeField] private GameObject tvRemote = default;
     [SerializeField] private GameObject tableTVRemote = default;
+    [SerializeField] private TextMeshProUGUI channel = default;
+    [SerializeField] private Animator tvAnimator = default;
+    [SerializeField] private string[] animatorBools = default;
     [SerializeField] private int[] channels = default;
 
     private Command currCommand;
@@ -19,15 +23,12 @@ public class TVRemote : MonoBehaviour, Remote
     private int currNums = 0;
     private int buildChannelNum = 0;
 
-
-    private void Update()
+    private void Start()
     {
-        if(currCommand != GameManager.CurrCommand) {
-            Reset();
-        }
-    }
+        channel.text = currChannel.ToString();
 
-    public void Reset()
+    }
+    public void NextCommand()
     {
         if (channels.Length < 3)
         {
@@ -71,18 +72,46 @@ public class TVRemote : MonoBehaviour, Remote
 
     public void ShowLargeRemote()
     {
-        //Debug.Log("Showing large remote");
         tableTVRemote.SetActive(false);
         tvRemote.SetActive(true);
 
-        Reset();
+        NextCommand();
     }
 
     public void ShowTableRemote()
     {
-        //Debug.Log("Showing table remote");
         tvRemote.gameObject.SetActive(false);
         tableTVRemote.gameObject.SetActive(true);
+        NextCommand();
+    }
+
+    public void ChangeChannel()
+    {
+        Debug.Log($"currChannel: {currChannel}");
+        switch (currChannel)
+        {
+            case 9:
+                tvAnimator.SetBool(animatorBools[0], true);
+                tvAnimator.SetBool(animatorBools[1], false);
+                tvAnimator.SetBool(animatorBools[2], false);
+                break;
+            case 48:
+                tvAnimator.SetBool(animatorBools[1], true);
+                tvAnimator.SetBool(animatorBools[2], false);
+                tvAnimator.SetBool(animatorBools[0], false);
+                break;
+            case 123:
+                tvAnimator.SetBool(animatorBools[2], true);
+                tvAnimator.SetBool(animatorBools[0], false);
+                tvAnimator.SetBool(animatorBools[1], false);
+                break;
+            default:
+                tvAnimator.SetBool(animatorBools[0], false);
+                tvAnimator.SetBool(animatorBools[1], false);
+                tvAnimator.SetBool(animatorBools[2], false);
+                break;
+
+        }
     }
 
     /*
@@ -93,8 +122,6 @@ public class TVRemote : MonoBehaviour, Remote
         Debug.Log($"ButtonPressed: {(RemoteButtons)button}, curCommand: {currCommand.command}");
         switch ((RemoteButtons)button)
         {
-
-            
             case RemoteButtons.ChannelUp:
                 if (currCommand.command != Command.Commands.ChangeChUpOne)
                 {
@@ -102,7 +129,9 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 currChannel = targChannel;
+                ChangeChannel();
                 GameManager.CorrectAction();
+                ShowTableRemote();
                 break;
             case RemoteButtons.ChannelDown:
                 if (currCommand.command != Command.Commands.ChangeChDownOne)
@@ -111,7 +140,9 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 currChannel = targChannel;
+                ChangeChannel();
                 GameManager.CorrectAction();
+                ShowTableRemote();
                 break;
             case RemoteButtons.VolumeUp:
                 if (currCommand.command != Command.Commands.VolUp)
@@ -121,6 +152,7 @@ public class TVRemote : MonoBehaviour, Remote
                 }
                 currVolume = targVolume;
                 GameManager.CorrectAction();
+                ShowTableRemote();
                 break;
             case RemoteButtons.VolumeDown:
                 if (currCommand.command != Command.Commands.VolDown)
@@ -130,6 +162,7 @@ public class TVRemote : MonoBehaviour, Remote
                 }
                 currVolume = targVolume;
                 GameManager.CorrectAction();
+                ShowTableRemote();
                 break;
             case RemoteButtons.Mute:
                 if (currCommand.command != Command.Commands.mute)
@@ -139,6 +172,7 @@ public class TVRemote : MonoBehaviour, Remote
                 }
                 currVolume = 0;
                 GameManager.CorrectAction();
+                ShowTableRemote();
                 break;
             case RemoteButtons.One:
                 if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command == Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
@@ -147,7 +181,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 1;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -158,7 +191,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 2;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -169,7 +201,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 3;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -180,7 +211,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 4;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -191,7 +221,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 5;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -202,7 +231,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 6;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -213,7 +241,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 7;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -224,7 +251,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 8;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -235,7 +261,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum = buildChannelNum * 10 + 9;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -246,7 +271,6 @@ public class TVRemote : MonoBehaviour, Remote
                     break;
                 }
                 buildChannelNum *= 10;
-                Debug.Log($"buildChannelNum: {buildChannelNum}");
                 currNums++;
 
                 break;
@@ -265,7 +289,9 @@ public class TVRemote : MonoBehaviour, Remote
                     numsNeeded = 0;
                     buildChannelNum = 0;
                     currChannel = targChannel;
+                    ChangeChannel();
                     GameManager.CorrectAction();
+                    ShowTableRemote();
                 }
                 break;
             default:
@@ -274,6 +300,9 @@ public class TVRemote : MonoBehaviour, Remote
         }
     }
 
+    /*
+     * All of the buttons on the TV remote
+     */
     public enum RemoteButtons
     {
         ChannelUp,

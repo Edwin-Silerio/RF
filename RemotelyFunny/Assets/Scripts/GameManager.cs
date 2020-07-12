@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] static private int numSeconds = 10;
     [SerializeField] private int countDownSec = 5;
     [SerializeField] static private float timerPenalty = .5f;
+    static private Score score;
     [SerializeField] static private TextMeshProUGUI commandDisplay = default;
     [SerializeField] private TextMeshProUGUI countDownDisplay = default;
     [SerializeField] private Command[] tvCommands = default;
@@ -113,13 +114,14 @@ public class GameManager : MonoBehaviour
 
     static public void CorrectAction()
     {
+        Debug.Log($"Fill: {timeSlider.value}");
+        score.ChangeScore((int)(timeSlider.value * 100));
         ResetTime();
         commandIndex++;
         if(commandIndex < commands.Count)
         {
             currCommand = commands[commandIndex];
             DisplayCommand();
-            
         }
         else
         {
@@ -149,12 +151,16 @@ public class GameManager : MonoBehaviour
      */
     private void SetUpScene()
     {
+        // Grab components
         timeSlider = FindObjectOfType<Slider>();
+        score = FindObjectOfType<Score>();
         commandDisplay = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
-        countDownDisplay = GameObject.FindGameObjectsWithTag("Countdown")[0].GetComponent<TextMeshProUGUI>();
+        countDownDisplay = GameObject.FindGameObjectWithTag("Countdown").GetComponent<TextMeshProUGUI>();
 
-        if (timeSlider == null || commandDisplay == null || countDownDisplay == null)
-            Debug.LogError($"timeSlide: {timeSlider}, commandDisplay: {commandDisplay}, countDownDisplay: {countDownDisplay}");
+        // Make sure all components exist
+        if (timeSlider == null || commandDisplay == null || countDownDisplay == null || score == null)
+            Debug.LogError($"timeSlide: {timeSlider}, commandDisplay: {commandDisplay}, countDownDisplay: {countDownDisplay}, score: {score}");
+        
         GrabCommands();
 
         if (commands.Count > 0) // Ensures that the commands list isn't empty

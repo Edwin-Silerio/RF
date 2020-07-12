@@ -5,6 +5,11 @@ using UnityEngine;
 public interface Remote
 {
     /// <summary>
+    /// Grab the next command
+    /// </summary>
+    void NextCommand();
+   
+    /// <summary>
     /// Hides the table remote and shows the large, interactable remote
     /// </summary>
     void ShowLargeRemote();
