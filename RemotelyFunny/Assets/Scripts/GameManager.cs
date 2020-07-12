@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         {
             currCommand = commands[commandIndex];
             DisplayCommand();
-
+            
         }
         else
         {
