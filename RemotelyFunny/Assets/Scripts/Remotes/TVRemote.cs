@@ -26,6 +26,7 @@ public class TVRemote : MonoBehaviour, Remote
     private void Start()
     {
         channel.text = currChannel.ToString();
+        ChangeChannel();
 
     }
     public void NextCommand()
