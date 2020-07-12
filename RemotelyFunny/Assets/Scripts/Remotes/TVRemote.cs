@@ -27,6 +27,9 @@ public class TVRemote : MonoBehaviour, Remote
     private DVRRemote dvrRemote;
     private BlenderRemote blenderRemote;
 
+    public GameObject GetTVRemote => tvRemote;
+    public GameObject GetTableTVRemote => tableTVRemote;
+
     private void Start()
     {
         channel.text = currChannel.ToString();
@@ -84,6 +87,7 @@ public class TVRemote : MonoBehaviour, Remote
     {
         tableTVRemote.SetActive(false);
         tvRemote.SetActive(true);
+        HideOtherRemotes();
         NextCommand();
     }
 
@@ -320,6 +324,15 @@ public class TVRemote : MonoBehaviour, Remote
                 Debug.LogError("Button doesn't exist");
                 break;
         }
+
+    }
+
+    public void HideOtherRemotes()
+    {
+        dvrRemote.GetDVRRemote.gameObject.SetActive(false);
+        dvrRemote.GetTableDVRRemote.gameObject.SetActive(true);
+        blenderRemote.GetBlenderRemote.gameObject.SetActive(false);
+        blenderRemote.GetTableBlenderRemote.gameObject.SetActive(true);
     }
 
     /*
