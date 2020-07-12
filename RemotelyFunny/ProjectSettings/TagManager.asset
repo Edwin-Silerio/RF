@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Countdown
   - Score
+  - Timer
   layers:
   - Default
   - TransparentFX

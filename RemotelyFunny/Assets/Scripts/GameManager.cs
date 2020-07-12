@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
     private void SetUpScene()
     {
         // Grab components
-        timeSlider = FindObjectOfType<Slider>();
+        timeSlider = GameObject.FindGameObjectWithTag("Timer").GetComponent<Slider>();
         score = FindObjectOfType<Score>();
         commandDisplay = FindObjectOfType<Canvas>().GetComponentInChildren<TextMeshProUGUI>();
         countDownDisplay = GameObject.FindGameObjectWithTag("Countdown").GetComponent<TextMeshProUGUI>();

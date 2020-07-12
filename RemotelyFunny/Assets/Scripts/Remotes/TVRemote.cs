@@ -10,9 +10,11 @@ public class TVRemote : MonoBehaviour, Remote
     [SerializeField] private GameObject tvRemote = default;
     [SerializeField] private GameObject tableTVRemote = default;
     [SerializeField] private TextMeshProUGUI channel = default;
+    [SerializeField] private Slider volumeSlider = default;
     [SerializeField] private Animator tvAnimator = default;
     [SerializeField] private string[] animatorBools = default;
     [SerializeField] private int[] channels = default;
+    [SerializeField] private int maxVolume = 5;
 
     private Command currCommand;
     public int currChannel = 123;
@@ -22,12 +24,19 @@ public class TVRemote : MonoBehaviour, Remote
     private int numsNeeded = 0;
     private int currNums = 0;
     private int buildChannelNum = 0;
+    private DVRRemote dvrRemote;
+    private BlenderRemote blenderRemote;
 
     private void Start()
     {
         channel.text = currChannel.ToString();
-        ChangeChannel();
+        dvrRemote = GetComponent<DVRRemote>();
+        blenderRemote = GetComponent<BlenderRemote>();
 
+        if (tvRemote == null || dvrRemote == null)
+            Debug.LogError($"tvRemote: {blenderRemote}, dvrRemote: {dvrRemote}");
+
+        ChangeChannel();
     }
 
     public void NextCommand()
@@ -75,7 +84,6 @@ public class TVRemote : MonoBehaviour, Remote
     {
         tableTVRemote.SetActive(false);
         tvRemote.SetActive(true);
-
         NextCommand();
     }
 
@@ -89,6 +97,7 @@ public class TVRemote : MonoBehaviour, Remote
     public void ChangeChannel()
     {
         Debug.Log($"currChannel: {currChannel}");
+        channel.text = currChannel.ToString();
         switch (currChannel)
         {
             case 9:
@@ -113,6 +122,16 @@ public class TVRemote : MonoBehaviour, Remote
                 break;
 
         }
+    }
+
+    public void ChangeVolume()
+    {
+        if (currVolume > maxVolume)
+            currVolume = maxVolume;
+        else if (currVolume < 0)
+            currVolume = 0;
+
+        volumeSlider.value += (1f/maxVolume) * targVolume;
     }
 
     /*
@@ -151,7 +170,8 @@ public class TVRemote : MonoBehaviour, Remote
                     GameManager.DecreaseTime();
                     break;
                 }
-                currVolume = targVolume;
+                targVolume = 1;
+                ChangeVolume();
                 GameManager.CorrectAction();
                 ShowTableRemote();
                 break;
@@ -161,7 +181,8 @@ public class TVRemote : MonoBehaviour, Remote
                     GameManager.DecreaseTime();
                     break;
                 }
-                currVolume = targVolume;
+                targVolume = -1;
+                ChangeVolume();
                 GameManager.CorrectAction();
                 ShowTableRemote();
                 break;
