@@ -8,28 +8,35 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("HUD")]
     [SerializeField] private Slider timeSlider = default;
-    [SerializeField] private int numSeconds = 10;
-    [SerializeField] private int countDownSec = 5;
+    [SerializeField] private int secondsPerCommand = 10;
+    [SerializeField] private int countDownSeconds = 5;
     [SerializeField] private float timerPenalty = .5f;
     [SerializeField] private TextMeshProUGUI countDownDisplay = default;
     [SerializeField] private GameObject speechBubble = default;
+
+    [Header("Commands")]
     [SerializeField] private Command[] tvCommands = default;
     [SerializeField] private Command[] dvrCommands = default;
     //[SerializeField] private Command[] blenderCommands = default;
+
+    [Header("Remotes and Devices")]
+    [SerializeField] private bool addDvrRemote = default;
     [SerializeField] private GameObject dvrBox = default;
-    [SerializeField] private GameObject tableDVR = default;
+    [SerializeField] private GameObject tableDVRRemote = default;
+    [SerializeField] private bool addBlenderRemote = default;
+    [SerializeField] private GameObject blender = default;
+    [SerializeField] private GameObject tableBlenderRemote = default;
     [SerializeField] private bool debug = default;
-    [SerializeField] private bool dvr = default;
-    [SerializeField] private bool blender = default;
 
     private TextMeshProUGUI commandDisplay;
     private Score score;
     private List<Command> commands;
     private Command currCommand;
     public Command CurrCommand => currCommand;
-    public bool GetDVR => dvr;
-    public bool GetBlender => blender;
+    public bool GetDVR => addDvrRemote;
+    public bool GetBlender => addBlenderRemote;
 
     private int numActionsCorrect = 0;
     private int currRound = -1;
@@ -60,12 +67,12 @@ public class GameManager : MonoBehaviour
         // "Game" scene
         if (!debug && SceneManager.GetActiveScene().name.Equals("Game") && countDownDisplay.text.Equals(""))
         { 
-            timeSlider.value -= Time.deltaTime / numSeconds;
+            timeSlider.value -= Time.deltaTime / secondsPerCommand;
 
             if (timeSlider.value <= 0)
             {
                 score.SaveScore();
-                countDownDisplay.text = countDownSec.ToString();
+                countDownDisplay.text = countDownSeconds.ToString();
                 SceneManager.LoadScene("GameOver");
             }
         }
@@ -114,19 +121,21 @@ public class GameManager : MonoBehaviour
         if(currRound == 0)
         {
             dvrBox.SetActive(false);
-            tableDVR.SetActive(false);
+            tableDVRRemote.SetActive(false);
         }
         else if (currRound == 1)
         {
             Debug.Log("Round 2");
             dvrBox.gameObject.SetActive(true);
-            tableDVR.SetActive(true);
-            dvr = true;
+            tableDVRRemote.SetActive(true);
+            addDvrRemote = true;
         }
         else if(currRound == 2)
         {
+            Debug.Log("Made it to round 3!");
             currRound++;
-            //blender = true;
+            addBlenderRemote = true;
+
         }
 
         GrabCommands();
@@ -146,7 +155,7 @@ public class GameManager : MonoBehaviour
     public void DecreaseTime()
     {
         Debug.Log("Decreasing time");
-        timeSlider.value -= timerPenalty / numSeconds;
+        timeSlider.value -= timerPenalty / secondsPerCommand;
     }
 
     /*
@@ -161,7 +170,7 @@ public class GameManager : MonoBehaviour
  */
         score = FindObjectOfType<Score>();
         commandDisplay = speechBubble.GetComponentInChildren<TextMeshProUGUI>();
-        tableDVR = GameObject.FindGameObjectWithTag("TableDVR");
+        tableDVRRemote = GameObject.FindGameObjectWithTag("TableDVR");
         dvrBox = GameObject.FindGameObjectWithTag("DVR");
         timeSlider.value = 1;
         score.ChangeScore(0);
@@ -181,7 +190,7 @@ public class GameManager : MonoBehaviour
         else
             Debug.LogError("Commands array is empty");
         
-        countDownDisplay.text = countDownSec.ToString();
+        countDownDisplay.text = countDownSeconds.ToString();
         StartCoroutine(CountDown());
     }
 
@@ -193,7 +202,7 @@ public class GameManager : MonoBehaviour
         // TODO: Change which lists to grab from based on the round the player is on
         commands = new List<Command>(tvCommands);
         numActionsCorrect = 0;
-        if (dvr)
+        if (addDvrRemote)
         {
             Debug.Log("Grabbing the dvr commands");
             foreach(Command command in dvrCommands)
@@ -207,10 +216,10 @@ public class GameManager : MonoBehaviour
      */
     private IEnumerator CountDown()
     {
-        while (countDownSec > 0)
+        while (countDownSeconds > 0)
         {
-            countDownSec--;
-            countDownDisplay.text = countDownSec.ToString();
+            countDownSeconds--;
+            countDownDisplay.text = countDownSeconds.ToString();
             yield return new WaitForSecondsRealtime(1f);
         }
         countDownDisplay.text = "";
