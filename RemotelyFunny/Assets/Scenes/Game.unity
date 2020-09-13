@@ -180,7 +180,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &15693629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4085,11 +4085,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dddb19127560e2549827912bc4168b35, type: 2}
   - {fileID: 11400000, guid: 81ef8ac1937ba5c4da7289c6c7070220, type: 2}
   - {fileID: 11400000, guid: 731445ec6b8f23d42b797c792ca0a053, type: 2}
+  blenderCommands:
+  - {fileID: 11400000, guid: e39988a1fec152c4fb82a3bcb60d9326, type: 2}
+  - {fileID: 11400000, guid: 152ca0dc5990ef64faf4c0e86dbe8d4f, type: 2}
+  - {fileID: 11400000, guid: 2e9887b1d22a7ed429953e0b2aeffb42, type: 2}
+  - {fileID: 11400000, guid: 94f26bab27954114f9aebaa5203cbeb4, type: 2}
+  - {fileID: 11400000, guid: f739df3018d92904c9c0a6bce963fc14, type: 2}
+  - {fileID: 11400000, guid: 5da4470445abb6d47bfc309ea69d916e, type: 2}
+  - {fileID: 11400000, guid: 0076937da4008cb49a19c79261c177af, type: 2}
+  - {fileID: 11400000, guid: 5eb25b33674081848bc76ce24132ea90, type: 2}
+  - {fileID: 11400000, guid: fc57c0e5a198ed54a8e35d1db6b16185, type: 2}
+  - {fileID: 11400000, guid: 819b0ff97a9dec14bab93074efe0bcea, type: 2}
+  - {fileID: 11400000, guid: 02df47f60552b334f962aa7126ff9340, type: 2}
+  - {fileID: 11400000, guid: f9df991095b4a544abe4afed8df604fe, type: 2}
+  - {fileID: 11400000, guid: 0cc081899cdd1654aaf5ee73d8baf8be, type: 2}
+  - {fileID: 11400000, guid: bc313eaca6fca2f4383d4109060d6005, type: 2}
+  - {fileID: 11400000, guid: b8458e329040a4845a672dd2b93e3d1c, type: 2}
   addDvrRemote: 0
   dvrBox: {fileID: 1195700232}
   tableDVRRemote: {fileID: 1517759285}
   addBlenderRemote: 0
-  blender: {fileID: 0}
+  blender: {fileID: 2070843078}
   tableBlenderRemote: {fileID: 1366938053}
   debug: 0
 --- !u!1 &1209926868
@@ -5570,7 +5586,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1517759286
 RectTransform:
   m_ObjectHideFlags: 0

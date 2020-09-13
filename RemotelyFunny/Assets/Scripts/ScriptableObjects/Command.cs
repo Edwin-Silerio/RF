@@ -26,6 +26,21 @@ public class Command : ScriptableObject
         Play,
         FF,
         Rewind,
+        SlowTomato,
+        MediumTomato,
+        FastTomato,
+        SlowFishHead,
+        MediumFishHead,
+        FastFishHead,
+        SlowIce,
+        MediumIce,
+        FastIce,
+        SlowStrawberry,
+        MediumStrawberry,
+        FastStrawberry,
+        SlowBanana,
+        MediumBanana,
+        FastBanana
     }
 
     public string commandDisplay; // How the command will be displayed in game

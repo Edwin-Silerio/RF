@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("Commands")]
     [SerializeField] private Command[] tvCommands = default;
     [SerializeField] private Command[] dvrCommands = default;
-    //[SerializeField] private Command[] blenderCommands = default;
+    [SerializeField] private Command[] blenderCommands = default;
 
     [Header("Remotes and Devices")]
     [SerializeField] private bool addDvrRemote = default;
@@ -122,18 +122,22 @@ public class GameManager : MonoBehaviour
         {
             dvrBox.SetActive(false);
             tableDVRRemote.SetActive(false);
+            blender.SetActive(false);
+            tableBlenderRemote.SetActive(false);
+
         }
         else if (currRound == 1)
         {
-            Debug.Log("Round 2");
+            Debug.Log("Made it to round 2!");
             dvrBox.gameObject.SetActive(true);
             tableDVRRemote.SetActive(true);
+            blender.SetActive(false);
+            tableBlenderRemote.SetActive(false);
             addDvrRemote = true;
         }
         else if(currRound == 2)
         {
             Debug.Log("Made it to round 3!");
-            currRound++;
             addBlenderRemote = true;
 
         }
