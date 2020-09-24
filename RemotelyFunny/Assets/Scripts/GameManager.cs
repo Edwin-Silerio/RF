@@ -8,6 +8,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    #region Unity 
     [Header("HUD")]
     [SerializeField] private Slider timeSlider = default;
     [SerializeField] private int secondsPerCommand = 10;
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timerPenalty = .5f;
     [SerializeField] private TextMeshProUGUI countDownDisplay = default;
     [SerializeField] private GameObject speechBubble = default;
+    [SerializeField] private TextMeshProUGUI commandDisplay = default;
+    [SerializeField] private Score score = default;
 
     [Header("Commands")]
     [SerializeField] private Command[] tvCommands = default;
@@ -28,34 +31,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool addBlenderRemote = default;
     [SerializeField] private GameObject blender = default;
     [SerializeField] private GameObject tableBlenderRemote = default;
+
+    [Header("")]
     [SerializeField] private bool debug = default;
 
-    private TextMeshProUGUI commandDisplay;
-    private Score score;
-    private List<Command> commands;
-    private Command currCommand;
-    public Command CurrCommand => currCommand;
-    public bool GetDVR => addDvrRemote;
-    public bool GetBlender => addBlenderRemote;
+    #endregion
 
+    #region Private
+    private List<Command> commands;
     private int numActionsCorrect = 0;
     private int currRound = -1;
+    #endregion
 
+    #region Getters Setters
+    public Command CurrCommand { get; private set; }
+    public bool GetDVR => addDvrRemote;
+    public bool GetBlender => addBlenderRemote;
+    #endregion
 
-    /*
-     * Called when the component is enabled. Helps with OnSceneLoaded()
-     */
-    private void OnEnable()
+    private void Start()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    /*
-     * Called when the component is disable, i.e. when the game ends. Helps with OnSceneLoaded()
-     */
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SetUpScene();
     }
 
     /*
@@ -65,7 +61,7 @@ public class GameManager : MonoBehaviour
     {
         // Only want the timer to go down if we're not in debug mode and we're currently in 
         // "Game" scene
-        if (!debug && SceneManager.GetActiveScene().name.Equals("Game") && countDownDisplay.text.Equals(""))
+        if (!debug && countDownDisplay.text.Equals(""))
         { 
             timeSlider.value -= Time.deltaTime / secondsPerCommand;
 
@@ -78,23 +74,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*
-     * Gets called everytime a scene is loaded. Checks if the current scene is the "Game" scene.
-     * If so, then setups the scene
-     */
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        //Debug.Log($"Scene name: {scene.name}");
-        if (scene.name.Equals("Game")) {
-            SetUpScene();
-        }
-        else if (scene.name.Equals("GameOver"))
-        {
-            score = GameObject.FindGameObjectWithTag("Score").GetComponent<Score>();
-            score.ShowRecentScore();
-        }
-    }
-
     public void CorrectAction()
     {
         numActionsCorrect++;
@@ -104,10 +83,10 @@ public class GameManager : MonoBehaviour
             ResetTime(); // Got it right so reset time
 
             int n = Random.Range(1, commands.Count);// Choose a random index
-            currCommand = commands[n]; 
+            CurrCommand = commands[n]; 
             // Moves the selected command to index 0 so it's not chosen again right away
             commands[n] = commands[0];
-            commands[0] = currCommand;
+            commands[0] = CurrCommand;
             DisplayCommand(); // Display the next command
         }
         else
@@ -118,6 +97,7 @@ public class GameManager : MonoBehaviour
     public void NextRound()
     {
         currRound++;
+        // Round 1
         if(currRound == 0)
         {
             dvrBox.SetActive(false);
@@ -126,18 +106,20 @@ public class GameManager : MonoBehaviour
             tableBlenderRemote.SetActive(false);
 
         }
+        // Round 2
         else if (currRound == 1)
         {
             Debug.Log("Made it to round 2!");
             dvrBox.gameObject.SetActive(true);
             tableDVRRemote.SetActive(true);
-            blender.SetActive(false);
-            tableBlenderRemote.SetActive(false);
             addDvrRemote = true;
         }
+        // Round 3
         else if(currRound == 2)
         {
             Debug.Log("Made it to round 3!");
+            blender.SetActive(true);
+            tableBlenderRemote.SetActive(true);
             addBlenderRemote = true;
 
         }
@@ -160,6 +142,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Decreasing time");
         timeSlider.value -= timerPenalty / secondsPerCommand;
+        
     }
 
     /*
@@ -167,15 +150,10 @@ public class GameManager : MonoBehaviour
      */
     private void SetUpScene()
     {
-        // Grab components
-        /* timeSlider = GameObject.FindGameObjectWithTag("Timer").GetComponent<Slider>();
-
-         countDownDisplay = GameObject.FindGameObjectWithTag("Countdown").GetComponent<TextMeshProUGUI>();
- */
-        score = FindObjectOfType<Score>();
+        /*score = FindObjectOfType<Score>();
         commandDisplay = speechBubble.GetComponentInChildren<TextMeshProUGUI>();
         tableDVRRemote = GameObject.FindGameObjectWithTag("TableDVR");
-        dvrBox = GameObject.FindGameObjectWithTag("DVR");
+        dvrBox = GameObject.FindGameObjectWithTag("DVR");*/
         timeSlider.value = 1;
         score.ChangeScore(0);
         currRound = -1;
@@ -190,7 +168,7 @@ public class GameManager : MonoBehaviour
         NextRound();
 
         if (commands.Count > 0) // Ensures that the commands list isn't empty
-            currCommand = commands[0];
+            CurrCommand = commands[0];
         else
             Debug.LogError("Commands array is empty");
         
@@ -206,11 +184,21 @@ public class GameManager : MonoBehaviour
         // TODO: Change which lists to grab from based on the round the player is on
         commands = new List<Command>(tvCommands);
         numActionsCorrect = 0;
-        if (addDvrRemote)
+        if(addDvrRemote)
         {
             Debug.Log("Grabbing the dvr commands");
             foreach(Command command in dvrCommands)
+            {
                 commands.Add(command);
+            }
+        }
+        if (addBlenderRemote)
+        {
+            Debug.Log("Grabbing the blender commands");
+            foreach(Command command in blenderCommands)
+            {
+                commands.Add(command);
+            }
         }
         commands.Shuffle();
     } 
@@ -236,7 +224,7 @@ public class GameManager : MonoBehaviour
     public void DisplayCommand()
     {
         speechBubble.gameObject.SetActive(true);
-        commandDisplay.text = currCommand.commandDisplay;
+        commandDisplay.text = CurrCommand.commandDisplay;
     }
 
 
