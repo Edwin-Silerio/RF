@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     #region Private
     private List<Command> commands;
+    private bool hasRoundStarted = false;
     private int numActionsCorrect = 0;
     private int currRound = -1;
     #endregion
@@ -55,13 +56,13 @@ public class GameManager : MonoBehaviour
     }
 
     /*
-    * Decrease the timer. If time is 0 or less then go to game over screen
+    * Decrease the timer. If time is 0 or less then go to game over screen.
     */
     private void FixedUpdate()
     {
-        // Only want the timer to go down if we're not in debug mode and we're currently in 
-        // "Game" scene
-        if (!debug && countDownDisplay.text.Equals(""))
+        // Only want the timer to go down if we're not in debug mode and the 
+        // round has started.
+        if (!debug && hasRoundStarted)
         { 
             timeSlider.value -= Time.deltaTime / secondsPerCommand;
 
@@ -74,86 +75,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CorrectAction()
-    {
-        numActionsCorrect++;
-        if (numActionsCorrect < 10)
-        {
-            score.ChangeScore((int)(timeSlider.value * 100)); // Change the score
-            ResetTime(); // Got it right so reset time
-
-            int n = Random.Range(1, commands.Count);// Choose a random index
-            CurrCommand = commands[n]; 
-            // Moves the selected command to index 0 so it's not chosen again right away
-            commands[n] = commands[0];
-            commands[0] = CurrCommand;
-            DisplayCommand(); // Display the next command
-        }
-        else
-            NextRound();
-        
-    }
-
-    public void NextRound()
-    {
-        currRound++;
-        // Round 1
-        if(currRound == 0)
-        {
-            dvrBox.SetActive(false);
-            tableDVRRemote.SetActive(false);
-            blender.SetActive(false);
-            tableBlenderRemote.SetActive(false);
-
-        }
-        // Round 2
-        else if (currRound == 1)
-        {
-            Debug.Log("Made it to round 2!");
-            dvrBox.gameObject.SetActive(true);
-            tableDVRRemote.SetActive(true);
-            addDvrRemote = true;
-        }
-        // Round 3
-        else if(currRound == 2)
-        {
-            Debug.Log("Made it to round 3!");
-            blender.SetActive(true);
-            tableBlenderRemote.SetActive(true);
-            addBlenderRemote = true;
-
-        }
-
-        GrabCommands();
-    }
-
-    /*
-     * Resets the time
-     */
-    public void ResetTime()
-    {
-        timeSlider.value = 1;
-    }
-
-    /*
-     * Decreases the time based on the value passed in
-     */
-    public void DecreaseTime()
-    {
-        Debug.Log("Decreasing time");
-        timeSlider.value -= timerPenalty / secondsPerCommand;
-        
-    }
-
     /*
      * Sets up the scene by grabbing the necessary components and commands
      */
     private void SetUpScene()
     {
-        /*score = FindObjectOfType<Score>();
-        commandDisplay = speechBubble.GetComponentInChildren<TextMeshProUGUI>();
-        tableDVRRemote = GameObject.FindGameObjectWithTag("TableDVR");
-        dvrBox = GameObject.FindGameObjectWithTag("DVR");*/
         timeSlider.value = 1;
         score.ChangeScore(0);
         currRound = -1;
@@ -174,6 +100,43 @@ public class GameManager : MonoBehaviour
         
         countDownDisplay.text = countDownSeconds.ToString();
         StartCoroutine(CountDown());
+    }
+    
+    /* 
+     * Increments the current round number and activates objects based on the
+     * current round. Then grabs the correct commands. Round 1 - Tv. 
+     * Round 2 - Tv, and Dvr. Round 3 - Tv, Dvr, and Blender.
+     */
+    private void NextRound()
+    {
+        currRound++;
+        // Round 1
+        if (currRound == 0)
+        {
+            dvrBox.SetActive(false);
+            tableDVRRemote.SetActive(false);
+            blender.SetActive(false);
+            tableBlenderRemote.SetActive(false);
+
+        }
+        // Round 2
+        else if (currRound == 1)
+        {
+            Debug.Log("Made it to round 2!");
+            dvrBox.gameObject.SetActive(true);
+            tableDVRRemote.SetActive(true);
+            addDvrRemote = true;
+        }
+        // Round 3
+        else if (currRound == 2)
+        {
+            Debug.Log("Made it to round 3!");
+            blender.SetActive(true);
+            tableBlenderRemote.SetActive(true);
+            addBlenderRemote = true;
+
+        }
+        GrabCommands();
     }
 
     /*
@@ -215,11 +178,55 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(1f);
         }
         countDownDisplay.text = "";
+        hasRoundStarted = true;
         DisplayCommand();
     }
 
     /// <summary>
-    /// Displays the command by changing the text
+    /// Increments the total number of correct actions and changes the score. 
+    /// If the player has 10 or more correct actions, move on to the next round.
+    /// </summary>
+    public void CorrectAction()
+    {
+        numActionsCorrect++;
+        if (numActionsCorrect < 10)
+        {
+            score.ChangeScore((int)(timeSlider.value * 100)); // Change the score
+            ResetTime(); // Got it right so reset time
+
+            int n = Random.Range(1, commands.Count);// Choose a random index
+            CurrCommand = commands[n]; 
+            // Moves the selected command to index 0 so it's not chosen again right away
+            commands[n] = commands[0];
+            commands[0] = CurrCommand;
+            DisplayCommand(); // Display the next command
+        }
+        else
+            NextRound();
+        
+    }
+
+    /// <summary>
+    /// Resets the time bar to the starting time.
+    /// </summary>
+    public void ResetTime()
+    {
+        timeSlider.value = 1;
+    }
+
+    /// <summary>
+    /// Decreases the time based on the timer penalty.
+    /// </summary>
+    public void DecreaseTime()
+    {
+        Debug.Log("Decreasing time");
+        timeSlider.value -= timerPenalty / secondsPerCommand;
+        
+    }
+
+
+    /// <summary>
+    /// Displays the current command on the speech bubble.
     /// </summary>
     public void DisplayCommand()
     {
@@ -237,6 +244,7 @@ public static class ShuffleHelper
 {
     public static void Shuffle<T>(this IList<T> list)
     {
+        Random.InitState((int)System.DateTime.Now.Ticks);
         int n = list.Count;
         while (n > 1)
         {
