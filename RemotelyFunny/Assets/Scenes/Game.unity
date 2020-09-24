@@ -4070,6 +4070,8 @@ MonoBehaviour:
   timerPenalty: 0.5
   countDownDisplay: {fileID: 1408493259}
   speechBubble: {fileID: 221782531}
+  commandDisplay: {fileID: 1082108082}
+  score: {fileID: 330606581}
   tvCommands:
   - {fileID: 11400000, guid: 2c1fb432d68fabd44be0ac8bdaddf991, type: 2}
   - {fileID: 11400000, guid: 1cd14b26d6e5fe742967de462e0cc78b, type: 2}
