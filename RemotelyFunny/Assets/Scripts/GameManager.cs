@@ -8,7 +8,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    #region Unity 
+    #region Unity Variables 
     [Header("HUD")]
     [SerializeField] private Slider timeSlider = default;
     [SerializeField] private int secondsPerCommand = 10;
@@ -37,11 +37,11 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Private
+    #region Private Variables 
     private List<Command> commands;
     private bool hasRoundStarted = false;
     private int numActionsCorrect = 0;
-    private int currRound = -1;
+    private int currRound = 0;
     #endregion
 
     #region Getters Setters
@@ -52,6 +52,16 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Make sure exposed variables are set in the editor
+        if (timeSlider == null || commandDisplay == null || 
+            countDownDisplay == null || score == null)
+        {
+            Debug.LogError($"Not exposed variables are set. " +
+                            $"timeSLider: {timeSlider}" +
+                            $"commadDisplay: {commandDisplay}" +
+                            $"countDownDisplay: {score}");
+        }
+
         SetUpScene();
     }
 
@@ -69,7 +79,6 @@ public class GameManager : MonoBehaviour
             if (timeSlider.value <= 0)
             {
                 score.SaveScore();
-                countDownDisplay.text = countDownSeconds.ToString();
                 SceneManager.LoadScene("GameOver");
             }
         }
@@ -80,24 +89,23 @@ public class GameManager : MonoBehaviour
      */
     private void SetUpScene()
     {
-        timeSlider.value = 1;
-        score.ChangeScore(0);
-        currRound = -1;
+        // Change seed so randomization is different
+        Random.InitState((int)System.DateTime.Now.Ticks); 
 
-
-        Random.InitState((int)System.DateTime.Now.Ticks); // Change seed so randomization is different
-
-        // Make sure all components exist
-        if (timeSlider == null || commandDisplay == null || countDownDisplay == null || score == null)
-            Debug.LogError($"timeSlide: {timeSlider}, commandDisplay: {commandDisplay}, countDownDisplay: {countDownDisplay}, score: {score}");
-
+        // Setup first round
         NextRound();
 
-        if (commands.Count > 0) // Ensures that the commands list isn't empty
-            CurrCommand = commands[0];
+        // Ensure that the commands list isn't empty
+        if (commands.Count > 0)
+        {
+            CurrCommand = commands[Random.Range(1, commands.Count)];
+        }
         else
-            Debug.LogError("Commands array is empty");
+        {
+            Debug.LogError("Commands list is empty");
+        }
         
+        // Start countdown
         countDownDisplay.text = countDownSeconds.ToString();
         StartCoroutine(CountDown());
     }
@@ -110,8 +118,10 @@ public class GameManager : MonoBehaviour
     private void NextRound()
     {
         currRound++;
+        numActionsCorrect = 0;
+
         // Round 1
-        if (currRound == 0)
+        if (currRound == 1)
         {
             dvrBox.SetActive(false);
             tableDVRRemote.SetActive(false);
@@ -120,7 +130,7 @@ public class GameManager : MonoBehaviour
 
         }
         // Round 2
-        else if (currRound == 1)
+        else if (currRound == 2)
         {
             Debug.Log("Made it to round 2!");
             dvrBox.gameObject.SetActive(true);
@@ -128,7 +138,7 @@ public class GameManager : MonoBehaviour
             addDvrRemote = true;
         }
         // Round 3
-        else if (currRound == 2)
+        else if (currRound == 3)
         {
             Debug.Log("Made it to round 3!");
             blender.SetActive(true);
@@ -136,18 +146,24 @@ public class GameManager : MonoBehaviour
             addBlenderRemote = true;
 
         }
+
         GrabCommands();
     }
 
     /*
-     * Puts the different command lists into list and shuffles it so it's randomized
+     * Puts the different command into the list and shuffles it so it's 
+     * randomized
      */
     private void GrabCommands()
     {
-        // TODO: Change which lists to grab from based on the round the player is on
-        commands = new List<Command>(tvCommands);
-        numActionsCorrect = 0;
-        if(addDvrRemote)
+        // Only make a new list if a list hasn't already been made
+        if(commands == null)
+        {
+            commands = new List<Command>(tvCommands);
+        }
+
+        // Don't want to re-add Dvr commands if they're already in the list
+        if(addDvrRemote && !addBlenderRemote)
         {
             Debug.Log("Grabbing the dvr commands");
             foreach(Command command in dvrCommands)
@@ -163,6 +179,7 @@ public class GameManager : MonoBehaviour
                 commands.Add(command);
             }
         }
+
         commands.Shuffle();
     } 
 
@@ -173,11 +190,12 @@ public class GameManager : MonoBehaviour
     {
         while (countDownSeconds > 0)
         {
-            countDownSeconds--;
             countDownDisplay.text = countDownSeconds.ToString();
+            countDownSeconds--;
             yield return new WaitForSecondsRealtime(1f);
         }
-        countDownDisplay.text = "";
+
+        countDownDisplay.gameObject.SetActive(false);
         hasRoundStarted = true;
         DisplayCommand();
     }
@@ -191,18 +209,24 @@ public class GameManager : MonoBehaviour
         numActionsCorrect++;
         if (numActionsCorrect < 10)
         {
-            score.ChangeScore((int)(timeSlider.value * 100)); // Change the score
-            ResetTime(); // Got it right so reset time
+            // Update player score
+            score.ChangeScore((int)(timeSlider.value * 100)); 
+            ResetTime(); 
 
-            int n = Random.Range(1, commands.Count);// Choose a random index
+            int n = Random.Range(1, commands.Count);
             CurrCommand = commands[n]; 
-            // Moves the selected command to index 0 so it's not chosen again right away
+            
+            // Moves the selected command to index 0 so it's not chosen again 
+            // right away
             commands[n] = commands[0];
             commands[0] = CurrCommand;
-            DisplayCommand(); // Display the next command
+
+            DisplayCommand(); 
         }
         else
+        {
             NextRound();
+        }
         
     }
 
@@ -224,7 +248,6 @@ public class GameManager : MonoBehaviour
         
     }
 
-
     /// <summary>
     /// Displays the current command on the speech bubble.
     /// </summary>
@@ -233,8 +256,6 @@ public class GameManager : MonoBehaviour
         speechBubble.gameObject.SetActive(true);
         commandDisplay.text = CurrCommand.commandDisplay;
     }
-
-
 }
 
 /// <summary>
