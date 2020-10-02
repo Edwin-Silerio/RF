@@ -6,7 +6,6 @@ public class GameOver : MonoBehaviour
 {
     [SerializeField] private Score score = default;
 
-    // Start is called before the first frame update
     void Start()
     {
         score.ShowRecentScore();

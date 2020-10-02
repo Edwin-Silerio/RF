@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
+/// <summary>
+/// Drives the gameplay. Sets up the rounds, keeps track of the
+/// player's score and the commands.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     #region Unity Variables 
@@ -50,11 +54,14 @@ public class GameManager : MonoBehaviour
     public bool GetBlender => addBlenderRemote;
     #endregion
 
+    /* 
+     * Check exposed variables and set up the scene
+     */
     private void Start()
     {
         // Make sure exposed variables are set in the editor
-        if (timeSlider == null || commandDisplay == null || 
-            countDownDisplay == null || score == null)
+        if (!timeSlider || !commandDisplay || 
+            !countDownDisplay || !score)
         {
             Debug.LogError($"Not exposed variables are set. " +
                             $"timeSLider: {timeSlider}" +
@@ -66,8 +73,8 @@ public class GameManager : MonoBehaviour
     }
 
     /*
-    * Decrease the timer. If time is 0 or less then go to game over screen.
-    */
+     * Decrease the timer. If time is 0 or less then go to game over screen.
+     */
     private void FixedUpdate()
     {
         // Only want the timer to go down if we're not in debug mode and the 

@@ -22,6 +22,9 @@ public class MainMenu: MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
+    /// <summary>
+    /// Goes to the main menu
+    /// </summary>
     public void GoToMenu()
     {
         SceneManager.LoadScene("MainMenu");
@@ -32,9 +35,12 @@ public class MainMenu: MonoBehaviour
     /// </summary>
     public void ShowScores()
     {
+        // Hide the menu
         menu.alpha = 0;
         menu.blocksRaycasts = false;
         menu.interactable = false;
+
+        // Show scores
         highscores.alpha = 1;
         highscores.blocksRaycasts = true;
         highscores.interactable = true;
@@ -48,9 +54,12 @@ public class MainMenu: MonoBehaviour
     public void HideScores()
     {
         Debug.Log("Showing menu");
+        // Hide the scores
         highscores.alpha = 0;
         highscores.blocksRaycasts = false;
         highscores.interactable = false;
+
+        // Show the menu
         menu.alpha = 1;
         menu.blocksRaycasts = true;
         menu.interactable = true;
@@ -61,7 +70,6 @@ public class MainMenu: MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
-
         Debug.Log("Quit the game");
         StartCoroutine(QuitAfterDelay());
     }
