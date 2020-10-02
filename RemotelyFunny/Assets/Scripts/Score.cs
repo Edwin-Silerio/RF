@@ -5,19 +5,18 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Changes the player's score
+/// Performs any function on the player's score such as updating it, showing
+/// it and saving them to playerprefsx.
 /// </summary>
 public class Score : MonoBehaviour
 {
-    [SerializeField] private int score = 0;
-    [SerializeField] private bool debug = false;
-
     private TextMeshProUGUI scoreDisplay = default;
-    private KeyCode incScore = KeyCode.Period;
-    private KeyCode decScore = KeyCode.Comma;
-    private string scoreKey = "RecentScore";
-    private string highscoresKey = "Highscores";
     private List<int> highscores;
+    private int score = 0;
+
+    // Readonly variables
+    private readonly string scoreKey = "RecentScore";
+    private readonly string highscoresKey = "Highscores";
 
 
     /*
@@ -28,24 +27,6 @@ public class Score : MonoBehaviour
 
         scoreDisplay = GetComponent<TextMeshProUGUI>();
         //scoreDisplay.text = "0";
-    }
-
-    /*
-     * Used for debugging. Press the . to increase the score. Press , to dec the score
-     */
-    private void Update()
-    {
-        if (debug)
-        {
-            if (Input.GetKeyDown(incScore))
-            {
-                ChangeScore(10);
-            }
-            else if (Input.GetKeyDown(decScore))
-            {
-                ChangeScore(-10);
-            }
-        }
     }
 
     /// <summary>
@@ -62,7 +43,7 @@ public class Score : MonoBehaviour
     {
         PlayerPrefs.SetInt(scoreKey, int.Parse(scoreDisplay.text));
         int recentScore = PlayerPrefs.GetInt(scoreKey);
-        highscores = new List<int>(PlayerPrefsX.GetIntArray(highscoresKey, 0, 5));
+        List<int> highscores = new List<int>(PlayerPrefsX.GetIntArray(highscoresKey, 0, 5));
         Debug.Log($"highscores count: {highscores.Count}");
         for (int i = 0; i < highscores.Count; i++)
         {
@@ -88,7 +69,7 @@ public class Score : MonoBehaviour
     public void ShowRecentScore()
     {
         Debug.Log("In showrecentscore");
-        scoreDisplay.text = $"{PlayerPrefs.GetInt(scoreKey, 0).ToString()}";
+        scoreDisplay.text = $"{PlayerPrefs.GetInt(scoreKey, 0)}";
     }
 
     public void ShowHighscores()

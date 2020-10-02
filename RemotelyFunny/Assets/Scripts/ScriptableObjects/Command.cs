@@ -13,6 +13,7 @@ public class Command : ScriptableObject
 {
     public enum Commands
     {
+        // TV Commands
         VolUp,
         VolDown,
         ChangeCh1,
@@ -21,11 +22,15 @@ public class Command : ScriptableObject
         ChangeChUpOne,
         ChangeChDownOne,
         mute,
+
+        // DVR Commands
         Pause,
         REC,
         Play,
         FF,
         Rewind,
+
+        // Blender Commands
         SlowTomato,
         MediumTomato,
         FastTomato,
