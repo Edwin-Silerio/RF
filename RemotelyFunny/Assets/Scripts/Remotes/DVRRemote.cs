@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DVRRemote : MonoBehaviour, Remote
+public class DVRRemote : MonoBehaviour, IRemote
 {
     [SerializeField] private GameObject dvrRemote = default;
     [SerializeField] private GameObject tableDVRRemote = default;
     [SerializeField] private Animator tvAnimator = default;
     [SerializeField] private GameObject recDot = default;
+    [SerializeField] private GameManager gameManager = default;
     
     private Command currCommand = default;
     private TVRemote tvRemote;
@@ -28,7 +29,7 @@ public class DVRRemote : MonoBehaviour, Remote
     public void NextCommand()
     {
         
-        currCommand = Managers.GameManager.CurrCommand;
+        currCommand = gameManager.CurrCommand;
         switch (currCommand.command)
         {
             case Command.Commands.Pause:
@@ -64,60 +65,60 @@ public class DVRRemote : MonoBehaviour, Remote
             case DVRRemoteButtons.Pause:
                 if(Command.Commands.Pause != currCommand.command)
                 {
-                    Managers.GameManager.DecreaseTime();
+                    gameManager.DecreaseTime();
                     break;
                 }
                 tvAnimator.speed = 0;
                 recDot.gameObject.SetActive(false);
-                Managers.GameManager.CorrectAction();
+                gameManager.CorrectAction();
                 ShowTableRemote();
                 Debug.Log("Pause");
                 break;
             case DVRRemoteButtons.REC:
                 if (Command.Commands.REC != currCommand.command)
                 {
-                    Managers.GameManager.DecreaseTime();
+                    gameManager.DecreaseTime();
                     break;
                 }
                 Debug.Log("Record");
                 recDot.gameObject.SetActive(true);
-                Managers.GameManager.CorrectAction();
+                gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
             case DVRRemoteButtons.Play:
                 if (Command.Commands.Play != currCommand.command)
                 {
-                    Managers.GameManager.DecreaseTime();
+                    gameManager.DecreaseTime();
                     break;
                 }
                 Debug.Log("Play");
                 recDot.gameObject.SetActive(false);
                 tvAnimator.speed = 1;
-                Managers.GameManager.CorrectAction();
+                gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
             case DVRRemoteButtons.FF:
                 if (Command.Commands.FF != currCommand.command)
                 {
-                    Managers.GameManager.DecreaseTime();
+                    gameManager.DecreaseTime();
                     break;
                 }
                 Debug.Log("FF");
                 recDot.gameObject.SetActive(false);
                 tvAnimator.speed = 2;
-                Managers.GameManager.CorrectAction();
+                gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
             case DVRRemoteButtons.Rewind:
                 if (Command.Commands.Rewind != currCommand.command)
                 {
-                    Managers.GameManager.DecreaseTime();
+                    gameManager.DecreaseTime();
                     break;
                 }
                 Debug.Log("Rewind");
                 recDot.gameObject.SetActive(false);
                 tvAnimator.speed = -1;
-                Managers.GameManager.CorrectAction();
+                gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
         }
@@ -144,7 +145,7 @@ public class DVRRemote : MonoBehaviour, Remote
         tvRemote.GetTVRemote.gameObject.SetActive(false);
         tvRemote.GetTableTVRemote.gameObject.SetActive(true);
         blenderRemote.GetBlenderRemote.gameObject.SetActive(false);
-        if(Managers.GameManager.GetBlender)
+        if(gameManager.GetBlender)
             blenderRemote.GetTableBlenderRemote.gameObject.SetActive(true);
     }
 

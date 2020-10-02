@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Remote
+public interface IRemote
 {
     /// <summary>
     /// Grab the next command

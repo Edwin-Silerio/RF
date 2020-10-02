@@ -6165,6 +6165,7 @@ MonoBehaviour:
   - Channel3
   channels: 09000000300000007b000000
   maxVolume: 5
+  gameManager: {fileID: 1203880268}
   currChannel: 9
   currVolume: 2
 --- !u!114 &1733366968
@@ -6183,6 +6184,7 @@ MonoBehaviour:
   tableDVRRemote: {fileID: 1517759285}
   tvAnimator: {fileID: 491669337}
   recDot: {fileID: 1347534536}
+  gameManager: {fileID: 1203880268}
 --- !u!114 &1733366969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6197,6 +6199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blenderRemote: {fileID: 15693628}
   tableBlenderRemote: {fileID: 1366938053}
+  gameManager: {fileID: 1203880268}
 --- !u!1 &1746432496
 GameObject:
   m_ObjectHideFlags: 0

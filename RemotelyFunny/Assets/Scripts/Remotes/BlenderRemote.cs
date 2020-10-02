@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlenderRemote : MonoBehaviour, Remote
+public class BlenderRemote : MonoBehaviour, IRemote
 {
     [SerializeField] private GameObject blenderRemote = default;
     [SerializeField] private GameObject tableBlenderRemote = default;
+    [SerializeField] private GameManager gameManager = default;
 
     private TVRemote tvRemote;
     private DVRRemote dvrRemote;
