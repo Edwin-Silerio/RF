@@ -7,17 +7,23 @@ using UnityEngine.UI;
 
 public class TVRemote : MonoBehaviour, IRemote
 {
+    #region Unity Variables
     [SerializeField] private GameObject tvRemote = default;
     [SerializeField] private GameObject tableTVRemote = default;
+    [SerializeField] private GameManager gameManager = default;
+    [SerializeField] private DVRRemote dvrRemote;
+    [SerializeField] private BlenderRemote blenderRemote;
+    #endregion
+
+    // TV Class variables?
     [SerializeField] private TextMeshProUGUI channel = default;
     [SerializeField] private Slider volumeSlider = default;
     [SerializeField] private Animator tvAnimator = default;
     [SerializeField] private string[] animatorBools = default;
     [SerializeField] private int[] channels = default;
     [SerializeField] private int maxVolume = 5;
-    [SerializeField] private GameManager gameManager = default;
 
-    private Command currCommand;
+    #region Private Variables
     public int currChannel = 123;
     public int currVolume = 2;
     private int targChannel;
@@ -25,50 +31,53 @@ public class TVRemote : MonoBehaviour, IRemote
     private int numsNeeded = 0;
     private int currNums = 0;
     private int buildChannelNum = 0;
-    private DVRRemote dvrRemote;
-    private BlenderRemote blenderRemote;
+    #endregion 
+
+    private readonly int volumeUp = 1;
+    private readonly int volumeDown = -1;
+    private readonly int mute = 0;
 
     public GameObject GetTVRemote => tvRemote;
     public GameObject GetTableTVRemote => tableTVRemote;
 
     private void Start()
     {
+        // Will be removed when the TV Class is made
         tvAnimator = GameObject.FindGameObjectWithTag("TV").GetComponent<Animator>();
         channel.text = currChannel.ToString();
-        dvrRemote = GetComponent<DVRRemote>();
-        blenderRemote = GetComponent<BlenderRemote>();
 
-        if (tvRemote == null || dvrRemote == null)
-            Debug.LogError($"tvRemote: {blenderRemote}, dvrRemote: {dvrRemote}");
+        // Make sure exposed variables are set in the editor
+        if (!tvRemote || !tableTVRemote || !gameManager || !dvrRemote || !blenderRemote)
+        {
+            Debug.LogError($"Exposed variables aren't set." +
+                           $"tvRemote: {tvRemote}," +
+                           $"tableTVRemote: {tableTVRemote}," +
+                           $"gameManager: {gameManager}," +
+                           $"dvrRemote: {dvrRemote}," +
+                           $"blenderRemote: {blenderRemote}.");
+        }
+
+        // Make sure we have atleast 3 channels
+        if (channels.Length < 3)
+        {
+            Debug.LogError("The channels list has less than 3 channels.");
+        }
+
 
         ChangeChannel();
     }
 
     public void NextCommand()
     {
-        if (channels.Length < 3)
-        {
-            Debug.LogError("channels list has less than 3 channels");
-            return;
-        }
 
-        currCommand = gameManager.CurrCommand;
+        Command currCommand = gameManager.CurrCommand;
         switch (currCommand.command)
         {
-            case Command.Commands.VolUp:
-                targVolume = currVolume + 1;
-                break;
-            case Command.Commands.VolDown:
-                targVolume = currVolume - 1;
-                break;
             case Command.Commands.ChangeChUpOne:
                 targChannel = currChannel + 1;
                 break;
             case Command.Commands.ChangeChDownOne:
                 targChannel = currChannel - 1;
-                break;
-            case Command.Commands.mute:
-                targVolume = 0;
                 break;
             case Command.Commands.ChangeCh1:
                 targChannel = channels[0];
@@ -131,14 +140,18 @@ public class TVRemote : MonoBehaviour, IRemote
         }
     }
 
-    public void ChangeVolume()
+    public void ChangeVolume(int volumeMultiplier)
     {
-        if (currVolume > maxVolume)
-            currVolume = maxVolume;
-        else if (currVolume < 0)
-            currVolume = 0;
-
-        volumeSlider.value += (1f/maxVolume) * targVolume;
+        // Change volume up or down one 
+        if(volumeMultiplier > 0)
+        {
+            volumeSlider.value += (1f/maxVolume) * volumeMultiplier;
+        }
+        // Mute
+        else if(volumeMultiplier == 0)
+        {
+            volumeSlider.value = 0;
+        }
     }
 
     /*
@@ -146,6 +159,7 @@ public class TVRemote : MonoBehaviour, IRemote
      */
     public void RemoteButtonPressed(int button)
     {
+        Command currCommand = gameManager.CurrCommand;
         //Debug.Log($"ButtonPressed: {(RemoteButtons)button}, curCommand: {currCommand.command}");
         switch ((RemoteButtons)button)
         {
@@ -179,8 +193,7 @@ public class TVRemote : MonoBehaviour, IRemote
                     gameManager.DecreaseTime();
                     break;
                 }
-                targVolume = 1;
-                ChangeVolume();
+                ChangeVolume(volumeUp);
                 gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
@@ -190,8 +203,7 @@ public class TVRemote : MonoBehaviour, IRemote
                     gameManager.DecreaseTime();
                     break;
                 }
-                targVolume = -1;
-                ChangeVolume();
+                ChangeVolume(volumeDown);
                 gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
@@ -201,8 +213,7 @@ public class TVRemote : MonoBehaviour, IRemote
                     gameManager.DecreaseTime();
                     break;
                 }
-                currVolume = 0;
-                volumeSlider.value = 0;
+                ChangeVolume(mute);
                 gameManager.CorrectAction();
                 ShowTableRemote();
                 break;

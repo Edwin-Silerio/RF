@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         if (!timeSlider || !commandDisplay || 
             !countDownDisplay || !score)
         {
-            Debug.LogError($"Not exposed variables are set. " +
+            Debug.LogError($"Exposed variables aren't set. " +
                             $"timeSLider: {timeSlider}" +
                             $"commadDisplay: {commandDisplay}" +
                             $"countDownDisplay: {score}");
