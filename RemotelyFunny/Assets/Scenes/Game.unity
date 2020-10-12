@@ -6169,6 +6169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tvRemote: {fileID: 321802218}
   tableTVRemote: {fileID: 1423098180}
+  gameManager: {fileID: 1203880268}
+  dvrRemote: {fileID: 1733366968}
+  blenderRemote: {fileID: 1733366969}
   channel: {fileID: 1989414102}
   volumeSlider: {fileID: 1746432498}
   tvAnimator: {fileID: 491669337}
@@ -6178,7 +6181,6 @@ MonoBehaviour:
   - Channel3
   channels: 09000000300000007b000000
   maxVolume: 5
-  gameManager: {fileID: 1203880268}
   currChannel: 9
   currVolume: 2
 --- !u!114 &1733366968
