@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TVRemote : MonoBehaviour, IRemote
@@ -210,105 +211,16 @@ public class TVRemote : MonoBehaviour, IRemote
                 gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
-            case RemoteButtons.One:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName == Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
+            case RemoteButtons.Number:
+                if(System.Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out int number))
                 {
-                    gameManager.DecreaseTime();
-                    break;
+                    buildChannelNum = buildChannelNum * 10 + number;
+                    Debug.Log($"buildChannelNum: {buildChannelNum}");
                 }
-                buildChannelNum = buildChannelNum * 10 + 1;
-                currNums++;
-
-                break;
-            case RemoteButtons.Two:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
+                else 
                 {
-                    gameManager.DecreaseTime();
-                    break;
+                    Debug.LogError($"Object's name is not an integer: {EventSystem.current.currentSelectedGameObject.name}");
                 }
-                buildChannelNum = buildChannelNum * 10 + 2;
-                currNums++;
-
-                break;
-            case RemoteButtons.Three:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 3;
-                currNums++;
-
-                break;
-            case RemoteButtons.Four:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 4;
-                currNums++;
-
-                break;
-            case RemoteButtons.Five:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 5;
-                currNums++;
-
-                break;
-            case RemoteButtons.Six:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 6;
-                currNums++;
-
-                break;
-            case RemoteButtons.Seven:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 7;
-                currNums++;
-
-                break;
-            case RemoteButtons.Eight:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 8;
-                currNums++;
-
-                break;
-            case RemoteButtons.Nine:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum = buildChannelNum * 10 + 9;
-                currNums++;
-
-                break;
-            case RemoteButtons.Zero:
-                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
-                {
-                    gameManager.DecreaseTime();
-                    break;
-                }
-                buildChannelNum *= 10;
-                currNums++;
-
                 break;
             case RemoteButtons.OK:
                 if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2
@@ -360,16 +272,7 @@ public class TVRemote : MonoBehaviour, IRemote
         VolumeUp,
         VolumeDown,
         Mute,
-        One,
-        Two,
-        Three,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        Zero,
+        Number,
         OK
     }
 }
