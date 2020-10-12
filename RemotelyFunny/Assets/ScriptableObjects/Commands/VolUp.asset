@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e4cb09c598c04690dd117156d2fee, type: 3}
   m_Name: VolUp
   m_EditorClassIdentifier: 
-  commandDisplay: Turn <color=green>TV</color> <color=purple>Volume</color> up!
+  targetValue: 0
+  commandTextDisplay: Turn <color=green>TV</color> <color=purple>Volume</color> up!
   command: 0

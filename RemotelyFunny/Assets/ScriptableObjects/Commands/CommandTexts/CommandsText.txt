@@ -1,0 +1,41 @@
+Change the <color=green>TV</color> channel to <color=orange>9!</color>
+Change the <color=green>TV</color> channel to <color=orange>48!</color>
+Change the <color=green>TV</color> channel to <color=orange>123!</color>
+Change the <color=green>TV</color> channel <color=orange>down</color> one!
+Change the <color=green>TV</color> channel <color=orange>up</color> one!
+<color=orange>Fast</color><color=purple> blend</color><color=yellow>bananas!</color>
+<color=orange>Fast</color><color=purple> blend</color><color=yellow>bananas!</color>
+<color=orange>Fast</color><color=purple> blend</color><color=blue>ice!</color>
+<color=orange>Fast</color><color=purple> blend</color><color=pink>strawberries!</color>
+<color=orange>Fast</color><color=purple> blend</color><color=red>tomatoes!</color>
+<color=orange>Fast forward</color> the <color=yellow>DVR</color>
+<color=orange>Medium</color><color=purple> blend</color><color=yellow>bananas!</color>
+<color=orange>Medium</color><color=purple> blend</color><color=green>fish heads!</color>
+<color=orange>Medium</color><color=purple> blend</color><color=blue>ice!</color>
+<color=orange>Medium</color><color=purple> blend</color><color=pink>strawberries!</color>
+<color=orange>Medium</color><color=purple> blend</color><color=red>tomatoes!</color>
+<color=yellow>Mute</color> the <color=green>TV!</color>
+<color=green>Pause</color> the <color=yellow>DVR</color>
+<color=purple>Play</color> the <color=yellow>DVR</color>
+<color=red>REC</color> on the <color=yellow>DVR</color>
+<color=orange>Rewind</color> the <color=yellow>DVR</color>
+<color=orange>Slow</color><color=purple> blend</color><color=yellow>bananas!</color>
+<color=orange>Slow</color><color=purple> blend</color><color=green>fish heads!</color>
+<color=orange>Slow</color><color=purple> blend</color><color=blue>ice!</color>
+<color=orange>Slow</color><color=purple> blend</color><color=pink>strawberries!</color>
+<color=orange>Slow</color><color=purple> blend</color><color=red>tomatoes!</color>
+Turn <color=green>TV</color> <color=purple>Volume</color> down!
+Turn <color=green>TV</color> <color=purple>Volume</color> up!
+
+
+
+
+
+
+
+
+
+
+
+
+

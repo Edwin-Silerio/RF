@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e4cb09c598c04690dd117156d2fee, type: 3}
   m_Name: Pause
   m_EditorClassIdentifier: 
-  commandDisplay: <color=green>Pause</color> the <color=yellow>DVR</color>
+  targetValue: 0
+  commandTextDisplay: <color=green>Pause</color> the <color=yellow>DVR</color>
   command: 8

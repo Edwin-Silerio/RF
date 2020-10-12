@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
     public void DisplayCommand()
     {
         speechBubble.gameObject.SetActive(true);
-        commandDisplay.text = CurrCommand.commandDisplay;
+        commandDisplay.text = CurrCommand.CommandTextDisplay;
     }
 }
 

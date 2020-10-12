@@ -6,11 +6,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Scriptable object for the commands
+/// Holds all the information for a command such as the name, the text it will 
+/// display and the target value (e.g. target channel number that the player 
+/// must enter) if there is one.
 /// </summary>
 [CreateAssetMenu(menuName = "Command")]
 public class Command : ScriptableObject
 {
+    // Used when the player must hit a target value e.g target channel number
+    // that the player must enter. Not every command will have a target value
+    [SerializeField] private int targetValue = -1;
+    [SerializeField] private string commandTextDisplay; 
+    [SerializeField] private Commands command;
+
+
+    // Getters
+    public string CommandTextDisplay => commandTextDisplay;
+    public Commands CommandName => command;
+    public int TargetValue => targetValue;
+
     public enum Commands
     {
         // TV Commands
@@ -48,6 +62,4 @@ public class Command : ScriptableObject
         FastBanana
     }
 
-    public string commandDisplay; // How the command will be displayed in game
-    public Commands command; // Command enum that lets us know what to look for
 }

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e4cb09c598c04690dd117156d2fee, type: 3}
   m_Name: FastStrawberry
   m_EditorClassIdentifier: 
-  commandDisplay: <color=orange>Fast</color><color=purple> blend</color><color=pink>strawberries!</color>
+  targetValue: 0
+  commandTextDisplay: <color=orange>Fast</color><color=purple> blend</color><color=pink>strawberries!</color>
   command: 24

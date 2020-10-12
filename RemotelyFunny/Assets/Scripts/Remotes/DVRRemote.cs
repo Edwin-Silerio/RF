@@ -30,7 +30,7 @@ public class DVRRemote : MonoBehaviour, IRemote
     {
         
         currCommand = gameManager.CurrCommand;
-        switch (currCommand.command)
+        switch (currCommand.CommandName)
         {
             case Command.Commands.Pause:
                 //targVolume = currVolume + 1;
@@ -63,7 +63,7 @@ public class DVRRemote : MonoBehaviour, IRemote
         switch ((DVRRemoteButtons)button)
         {
             case DVRRemoteButtons.Pause:
-                if(Command.Commands.Pause != currCommand.command)
+                if(Command.Commands.Pause != currCommand.CommandName)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -75,7 +75,7 @@ public class DVRRemote : MonoBehaviour, IRemote
                 Debug.Log("Pause");
                 break;
             case DVRRemoteButtons.REC:
-                if (Command.Commands.REC != currCommand.command)
+                if (Command.Commands.REC != currCommand.CommandName)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -86,7 +86,7 @@ public class DVRRemote : MonoBehaviour, IRemote
                 ShowTableRemote();
                 break;
             case DVRRemoteButtons.Play:
-                if (Command.Commands.Play != currCommand.command)
+                if (Command.Commands.Play != currCommand.CommandName)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -98,7 +98,7 @@ public class DVRRemote : MonoBehaviour, IRemote
                 ShowTableRemote();
                 break;
             case DVRRemoteButtons.FF:
-                if (Command.Commands.FF != currCommand.command)
+                if (Command.Commands.FF != currCommand.CommandName)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -110,7 +110,7 @@ public class DVRRemote : MonoBehaviour, IRemote
                 ShowTableRemote();
                 break;
             case DVRRemoteButtons.Rewind:
-                if (Command.Commands.Rewind != currCommand.command)
+                if (Command.Commands.Rewind != currCommand.CommandName)
                 {
                     gameManager.DecreaseTime();
                     break;

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e4cb09c598c04690dd117156d2fee, type: 3}
   m_Name: ChangeChDownByOne
   m_EditorClassIdentifier: 
-  commandDisplay: Change the <color=green>TV</color> channel <color=orange>down</color>
+  targetValue: 0
+  commandTextDisplay: Change the <color=green>TV</color> channel <color=orange>down</color>
     one!
   command: 6

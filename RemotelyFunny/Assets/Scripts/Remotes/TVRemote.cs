@@ -26,8 +26,7 @@ public class TVRemote : MonoBehaviour, IRemote
     #region Private Variables
     public int currChannel = 123;
     public int currVolume = 2;
-    private int targChannel;
-    private int targVolume;
+    //private int targChannel;
     private int numsNeeded = 0;
     private int currNums = 0;
     private int buildChannelNum = 0;
@@ -71,15 +70,9 @@ public class TVRemote : MonoBehaviour, IRemote
     {
 
         Command currCommand = gameManager.CurrCommand;
-        switch (currCommand.command)
+        switch (currCommand.CommandName)
         {
-            case Command.Commands.ChangeChUpOne:
-                targChannel = currChannel + 1;
-                break;
-            case Command.Commands.ChangeChDownOne:
-                targChannel = currChannel - 1;
-                break;
-            case Command.Commands.ChangeCh1:
+           /* case Command.Commands.ChangeCh1:
                 targChannel = channels[0];
                 numsNeeded = 1;
                 break;
@@ -90,7 +83,7 @@ public class TVRemote : MonoBehaviour, IRemote
             case Command.Commands.ChangeCh3:
                 targChannel = channels[2];
                 numsNeeded = 3;
-                break;
+                break;*/
         }
     }
 
@@ -164,31 +157,31 @@ public class TVRemote : MonoBehaviour, IRemote
         switch ((RemoteButtons)button)
         {
             case RemoteButtons.ChannelUp:
-                if (currCommand.command != Command.Commands.ChangeChUpOne)
+                if (currCommand.CommandName != Command.Commands.ChangeChUpOne)
                 {
                     gameManager.DecreaseTime();
                     break;
                 }
-                currChannel = targChannel;
+                currChannel++;
                 tvAnimator.speed = 1;
                 ChangeChannel();
                 gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
             case RemoteButtons.ChannelDown:
-                if (currCommand.command != Command.Commands.ChangeChDownOne)
+                if (currCommand.CommandName != Command.Commands.ChangeChDownOne)
                 {
                     gameManager.DecreaseTime();
                     break;
                 }
-                currChannel = targChannel;
+                currChannel--;
                 tvAnimator.speed = 1;
                 ChangeChannel();
                 gameManager.CorrectAction();
                 ShowTableRemote();
                 break;
             case RemoteButtons.VolumeUp:
-                if (currCommand.command != Command.Commands.VolUp)
+                if (currCommand.CommandName != Command.Commands.VolUp)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -198,7 +191,7 @@ public class TVRemote : MonoBehaviour, IRemote
                 ShowTableRemote();
                 break;
             case RemoteButtons.VolumeDown:
-                if (currCommand.command != Command.Commands.VolDown)
+                if (currCommand.CommandName != Command.Commands.VolDown)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -208,7 +201,7 @@ public class TVRemote : MonoBehaviour, IRemote
                 ShowTableRemote();
                 break;
             case RemoteButtons.Mute:
-                if (currCommand.command != Command.Commands.mute)
+                if (currCommand.CommandName != Command.Commands.mute)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -218,7 +211,7 @@ public class TVRemote : MonoBehaviour, IRemote
                 ShowTableRemote();
                 break;
             case RemoteButtons.One:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command == Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName == Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -228,7 +221,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Two:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -238,7 +231,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Three:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -248,7 +241,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Four:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -258,7 +251,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Five:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -268,7 +261,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Six:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -278,7 +271,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Seven:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -288,7 +281,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Eight:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -298,7 +291,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Nine:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -308,7 +301,7 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.Zero:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2 && currCommand.command != Command.Commands.ChangeCh3)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2 && currCommand.CommandName != Command.Commands.ChangeCh3)
                 {
                     gameManager.DecreaseTime();
                     break;
@@ -318,8 +311,8 @@ public class TVRemote : MonoBehaviour, IRemote
 
                 break;
             case RemoteButtons.OK:
-                if (currCommand.command != Command.Commands.ChangeCh1 && currCommand.command != Command.Commands.ChangeCh2
-                    && currCommand.command != Command.Commands.ChangeCh3 || currNums != numsNeeded)
+                if (currCommand.CommandName != Command.Commands.ChangeCh1 && currCommand.CommandName != Command.Commands.ChangeCh2
+                    && currCommand.CommandName != Command.Commands.ChangeCh3 || buildChannelNum != currCommand.TargetValue)
                 {
                     Debug.Log($"Currnums: {currNums}, numsNeeded: {numsNeeded}");
                     buildChannelNum = 0;
@@ -328,12 +321,12 @@ public class TVRemote : MonoBehaviour, IRemote
                     break;
                 }
 
-                else if (currNums == numsNeeded && buildChannelNum == targChannel)
+                else if (buildChannelNum == currCommand.TargetValue)
                 {
                     currNums = 0;
                     numsNeeded = 0;
                     buildChannelNum = 0;
-                    currChannel = targChannel;
+                    currChannel = currCommand.TargetValue;
                     tvAnimator.speed = 1;
                     ChangeChannel();
                     gameManager.CorrectAction();
